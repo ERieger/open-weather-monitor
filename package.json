@@ -1,0 +1,23 @@
+{
+  "name": "open-weather-monitor",
+  "version": "1.0.0",
+  "description": "A project aimed at creating a cost effective, intuitive, and open weather monitoring ecosystem.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-dev": "nodemon ./server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ERieger/open-weather-monitor.git"
+  },
+  "author": "ERieger",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ERieger/open-weather-monitor/issues"
+  },
+  "homepage": "https://github.com/ERieger/open-weather-monitor#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
