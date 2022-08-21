@@ -5,9 +5,7 @@ const port = 3000;
 const path = require('path');
 
 // Serve static public content
-app.use(express.static('../public/assets'));
-app.use(express.static('../public/css'));
-app.use(express.static('../public/js'));
+app.use(express.static('./static'));
 
 // Import custom modules
 const auth = require('./modules/auth.js');
@@ -18,6 +16,6 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-app.listen(port, function() {
-    console.log(`Example app listening on port ${port}!`)
+app.listen(port, function () {
+  console.log(`Example app listening on port ${port}!`)
 });
