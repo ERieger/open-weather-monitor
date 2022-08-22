@@ -4,12 +4,22 @@ const port = 3000;
 
 const path = require('path');
 
-// Serve static public content
-app.use(express.static('./static'));
+
+
+// Set reference to static files
+app.use('/static', express.static(path.join(__dirname, '../public/static')));
+app.use('/js', express.static(path.join(__dirname, '../public/static/js')));
+app.use('/css', express.static(path.join(__dirname, '../public/static/css')));
+app.use('/assets', express.static(path.join(__dirname, '../public/static/assets')));
+app.use('/images', express.static(path.join(__dirname, '../public/static/assets/images')));
+
+
 
 // Import custom modules
 const auth = require('./modules/auth.js');
 app.use('/login', auth);
+
+
 
 // Index page route.
 app.get('/', function (req, res) {
@@ -17,5 +27,5 @@ app.get('/', function (req, res) {
 });
 
 app.listen(port, function () {
-  console.log(`Example app listening on port ${port}!`)
+  console.log(`App listening on port ${port}!`)
 });

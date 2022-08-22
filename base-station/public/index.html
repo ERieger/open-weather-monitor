@@ -6,20 +6,24 @@
     <title>Index</title>
     <!-- <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon"> -->
 
-    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta11/dist/js/tabler.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta11/dist/css/tabler.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+        integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+        crossorigin="" />
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 
 <body>
     <header class="navbar navbar-expand-md navbar-light d-print-none">
         <div class="container-xl">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+            <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
                 <span class="navbar-toggler-icon"></span>
-            </button>
+            </button> -->
             <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                <a href=".">
-                    <img src="./static/images/logo.png" width="110" height="32" alt="Open Weather Monitor" class="navbar-brand-image">
-                </a>
+                Open Weather Monitor
+                <!-- <a href=".">
+                    <img src="./static/images/logo.png" width="110" height="32" alt="Logo" class="navbar-brand-image">
+                </a> -->
             </h1>
             <div class="navbar-nav flex-row order-md-last">
                 <div class="d-none d-md-flex">
@@ -168,6 +172,143 @@
             </div>
         </div>
     </header>
+
+    <div class="page-body">
+        <div class="container">
+            <div class="row">
+                <div class="col big-box">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">Simple map</div>
+                            <div class="ratio ratio-16x9">
+                                <div>
+                                    <div id="map"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg">
+                    <div class="row mt-3 mt-lg-0">
+                            <div class="col-lg">
+                                <div class="card card-sm">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="bg-blue text-white avatar">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="icon icon-tabler icon-tabler-wind" width="24" height="24"
+                                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M5 8h8.5a2.5 2.5 0 1 0 -2.34 -3.24"></path>
+                                                        <path d="M3 12h15.5a2.5 2.5 0 1 1 -2.34 3.24"></path>
+                                                        <path d="M4 16h5.5a2.5 2.5 0 1 1 -2.34 3.24"></path>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div class="col">
+                                                <div>Wind Speed</div>
+                                                <div class="text-muted">15 km/h</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg">
+                                <div class="card card-sm">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="bg-blue text-white avatar">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="icon icon-tabler icon-tabler-wind" width="24" height="24"
+                                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M5 8h8.5a2.5 2.5 0 1 0 -2.34 -3.24"></path>
+                                                        <path d="M3 12h15.5a2.5 2.5 0 1 1 -2.34 3.24"></path>
+                                                        <path d="M4 16h5.5a2.5 2.5 0 1 1 -2.34 3.24"></path>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div class="col">
+                                                <div>Wind Speed</div>
+                                                <div class="text-muted">15 km/h</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-lg">
+                            <div class="card card-sm">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto">
+                                            <span class="bg-blue text-white avatar">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="icon icon-tabler icon-tabler-wind" width="24" height="24"
+                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M5 8h8.5a2.5 2.5 0 1 0 -2.34 -3.24"></path>
+                                                    <path d="M3 12h15.5a2.5 2.5 0 1 1 -2.34 3.24"></path>
+                                                    <path d="M4 16h5.5a2.5 2.5 0 1 1 -2.34 3.24"></path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="col">
+                                            <div>Wind Speed</div>
+                                            <div class="text-muted">15 km/h</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg">
+                            <div class="card card-sm">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto">
+                                            <span class="bg-blue text-white avatar">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="icon icon-tabler icon-tabler-wind" width="24" height="24"
+                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M5 8h8.5a2.5 2.5 0 1 0 -2.34 -3.24"></path>
+                                                    <path d="M3 12h15.5a2.5 2.5 0 1 1 -2.34 3.24"></path>
+                                                    <path d="M4 16h5.5a2.5 2.5 0 1 1 -2.34 3.24"></path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="col">
+                                            <div>Wind Speed</div>
+                                            <div class="text-muted">15 km/h</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta11/dist/js/tabler.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin=""></script>
+
+    <script src="/js/dashboard.js"></script>
 </body>
 
 </html>
