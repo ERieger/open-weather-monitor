@@ -13,6 +13,10 @@ app.use('/css', express.static(path.join(__dirname, '../public/static/css')));
 app.use('/assets', express.static(path.join(__dirname, '../public/static/assets')));
 app.use('/images', express.static(path.join(__dirname, '../public/static/assets/images')));
 
+// Set template engine
+app.set('views', __dirname + '/views');
+app.set('view engine', 'pug');
+
 
 
 // Import custom modules
@@ -23,7 +27,7 @@ app.use('/login', auth);
 
 // Index page route.
 app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
+  res.render(path.join('./index.pug'));
 });
 
 app.listen(port, function () {
