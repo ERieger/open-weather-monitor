@@ -3,7 +3,7 @@ html(lang='en')
     head
         meta(charset='UTF-8')
         title Index
-        // <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
+        link(rel='icon' href='/images/logo.png' type='image/x-icon')
         link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta11/dist/css/tabler.min.css')
         link(rel='stylesheet' href='https://unpkg.com/leaflet@1.8.0/dist/leaflet.css' integrity='sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==' crossorigin='')
         link(rel='stylesheet' href='/css/index.css')
@@ -15,11 +15,8 @@ html(lang='en')
                     <span class="navbar-toggler-icon"></span>
                     </button>
                 h1.navbar-brand.navbar-brand-autodark.d-none-navbar-horizontal.pe-0.pe-md-3
+                    a(href="/"): img(src="/images/logo.png" alt="logo" width="110" height="32").navbar-brand-image
                     | Open Weather Monitor
-                    //
-                        <a href=".">
-                        <img src="./static/images/logo.png" width="110" height="32" alt="Logo" class="navbar-brand-image">
-                        </a>
                 .navbar-nav.flex-row.order-md-last
                     .d-none.d-md-flex
                         .nav-item.dropdown.d-none.d-md-flex.me-3
@@ -95,15 +92,15 @@ html(lang='en')
                         a.nav-link.d-flex.lh-1.text-reset.p-0(href='#' data-bs-toggle='dropdown' aria-label='Open user menu')
                             span.avatar.avatar-sm(style='background-image: url(./static/avatars/000m.jpg)')
                             .d-none.d-xl-block.ps-2
-                                div Pawe&lstrok; Kuna
-                                .mt-1.small.text-muted UI Designer
+                                div First Last
+                                .mt-1.small.text-muted Role
                         .dropdown-menu.dropdown-menu-end.dropdown-menu-arrow
                             a.dropdown-item(href='#') Set status
                             a.dropdown-item(href='#') Profile &amp; account
                             a.dropdown-item(href='#') Feedback
                             .dropdown-divider
                             a.dropdown-item(href='#') Settings
-                            a.dropdown-item(href='#') Logout
+                            a.dropdown-item(href='/logout') Logout
         .page-body
             .container
                 .row
@@ -243,8 +240,9 @@ html(lang='en')
                                             #rain-peek.chart-sm.h-5.mt-1(style='min-height: 40px;')
                 .row.mt-3
                     .col
-                        .card(style='height: 10rem;')
-                            img.h-100.w-100(src='https://images.pexels.com/photos/531906/pexels-photo-531906.jpeg?auto=compress&cs=tinysrgb&w=1600' alt='Rainy' style='object-fit: cover;')
+                        .card(style='height: 10rem; background-image: url("https://images.pexels.com/photos/531906/pexels-photo-531906.jpeg?auto=compress&cs=tinysrgb&w=1600");').d-flex.flex-column.justify-content-end
+                            h1.p-2.pb-0.mb-0 Concordia College
+                            p.p-2.pt-0 -34.9598192, 138.6175679
                 .row.row-deck.mt-3
                     .col-lg-6
                         .card
@@ -258,6 +256,7 @@ html(lang='en')
                                 .card-title Temperature
                             .card-body
                                 #temperature-chart.chart-lg
+
         // Import project dependencies
         script(src='https://code.jquery.com/jquery-3.6.0.min.js' integrity='sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=' crossorigin='anonymous')
         script(src='https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta11/dist/js/tabler.min.js')

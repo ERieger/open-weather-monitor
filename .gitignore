@@ -1,3 +1,6 @@
+# Custom config
+/base-station/src/config/default.json
+
 # Logs
 logs
 *.log

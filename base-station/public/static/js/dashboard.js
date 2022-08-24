@@ -1,5 +1,5 @@
 // Leaflets map config
-let map = L.map('map').setView([51.505, -0.09], 13);
+let map = L.map('map').setView([-34.9831874,138.628318], 12.35);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
