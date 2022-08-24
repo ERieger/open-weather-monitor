@@ -5,13 +5,13 @@ html(lang='en')
         title Login
         link(rel="icon" href="/images/logo.png" type="image/x-icon")
         link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta11/dist/css/tabler.min.css')
-    body.border-top-wide.border-primary.d-flex.flex-column
+    body.border-top-wide.border-primary.d-flex.flex-column.overflow-hidden
         .page.page-center
             .container-tight.py-4
                 .text-center.mb-4
-                    a.navbar-brand.navbar-brand-autodark(href='.')
-                        img(src='./static/logo.svg' height='36' alt='')
-                form.card.card-md(action='/authenticate' method='post')
+                    a.navbar-brand.navbar-brand-autodark(href='/')
+                        img(src='/images/logo.png' height='36' alt='')
+                form.card(action='/authenticate' method='post')
                     .card-body
                         h2.card-title.text-center.mb-4 Login to your account
                         .mb-3
@@ -20,9 +20,9 @@ html(lang='en')
                         .mb-2
                             label.form-label Password
                             .input-group.input-group-flat
-                                input.form-control(type='password' name="password" placeholder='Password' autocomplete='off')
+                                input.form-control#password(type='password' name="password" placeholder='Password' autocomplete='off')
                                 span.input-group-text
-                                    a.link-secondary(href='#' title='Show password' data-bs-toggle='tooltip')
+                                    a.link-secondary#password-toggle(href='#' title='Show password' data-bs-toggle='tooltip')
                                         // Download SVG icon from http://tabler-icons.io/i/eye
                                         svg.icon(xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round')
                                             path(stroke='none' d='M0 0h24v24H0z' fill='none')
@@ -30,5 +30,8 @@ html(lang='en')
                                             path(d='M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7')
                         .form-footer
                             button.btn.btn-primary.w-100(type='submit') Sign in
+            .container-tight.text-center.text-muted
+                p Contact the server administrator for an account.
         script(src='https://code.jquery.com/jquery-3.6.0.min.js' integrity='sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=' crossorigin='anonymous')
         script(src='https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta11/dist/js/tabler.min.js')
+        script(src="/js/login.js") 
