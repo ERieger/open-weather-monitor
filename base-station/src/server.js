@@ -22,6 +22,13 @@ const app = express();                      // Define app
 app.set('views', __dirname + '/views');     // Views directory
 app.set('view engine', 'pug');              // Set view engine
 
+// Connect to database - load values form environment variables
+mongoose.connect(`mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`, {
+    dbName: process.env.MONGO_DATABASE,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
 // Set reference to static files
 app.use('/static', express.static(path.join(__dirname, '../public/static')));
 app.use('/js', express.static(path.join(__dirname, '../public/static/js')));
@@ -37,7 +44,7 @@ app.use(session({
   },
   secret: process.env.COOKIE_KEY,
   store: MongoStore.create({
-    mongoUrl: `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`,
+    client: mongoose.connection.getClient(),
     dbName: process.env.MONGO_DATABASE
   }),
   resave: false,
@@ -57,13 +64,6 @@ passport.deserializeUser(User.deserializeUser());       // Deserialize
 // Server configuration
 const config = require("./config/config");              // Load config json
 const port = config.port;                               // Get selected server port
-
-// Connect to database - load values form environment variables
-mongoose.connect(`mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`, {
-    dbName: process.env.MONGO_DATABASE,
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
 
 // Function to register a new user
 // User.register({ username: 'test', active: false }, 'test');
@@ -87,12 +87,15 @@ app.get('/logout', (req, res) => {
 
 // Dashboard (ensures auth state)
 app.get('/dashboard', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
-  // res.send(`Hello ${req.user.username}. Your session ID is ${req.sessionID} 
-  //  and your session expires in ${req.session.cookie.maxAge} 
-  //  milliseconds.<br><br>
-  //  <a href="/logout">Log Out</a><br><br>
-  //  <a href="/secret">Members Only</a>`);
   res.render(path.join('./index.pug'));
+});
+
+app.get('/authtest', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
+  res.send(`Hello ${req.user.username}. Your session ID is ${req.sessionID} 
+   and your session expires in ${req.session.cookie.maxAge} 
+   milliseconds.<br><br>
+   <a href="/logout">Log Out</a><br><br>`);
+   console.log(req);
 });
 
 // Start server listening on selected port
