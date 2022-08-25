@@ -141,11 +141,12 @@ html(lang='en')
                                         .card-title Select a Station
                                         .ratio.ratio-16x9
                                             .table-responsive
-                                                table.table.table-vcenter
+                                                table.table.table-vcenter.text-center
                                                     thead
                                                         tr
-                                                            th ID
+                                                            th Index
                                                             th Name
+                                                            th Status
                                                             th Lat
                                                             th Lon
                                                             th.w-1
@@ -154,6 +155,11 @@ html(lang='en')
                                                             td 1
                                                             td.text-muted
                                                                 | Concordia College
+                                                            td
+                                                                span.status-indicator.status-green.status-indicator-animated
+                                                                    span.status-indicator-circle
+                                                                    span.status-indicator-circle
+                                                                    span.status-indicator-circle
                                                             td.text-muted
                                                                 | -34.9598192
                                                             td.text-muted
@@ -165,12 +171,15 @@ html(lang='en')
                                                             td 2
                                                             td.text-muted
                                                                 | Home
+                                                            td
+                                                                span.status-indicator.status-red
+                                                                    span.status-indicator-circle
                                                             td.text-muted
                                                                 | -35.026167
                                                             td.text-muted
                                                                 | 138.6251429
                                                             td
-                                                                a.btn.btn-primary(href='#')
+                                                                a.btn.btn-primary.disabled(href='#')
                                                                     | Select
                     .col-lg
                         .row.mt-3.mt-lg-0

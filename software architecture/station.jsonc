@@ -1,0 +1,10 @@
+// Schema defining a station node
+{
+    "stationId": "String",
+    "name": "String",
+    
+    "loc": {
+        "lat": "Int",
+        "Lon": "Int"
+    }
+}

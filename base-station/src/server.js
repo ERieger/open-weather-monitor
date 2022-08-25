@@ -15,7 +15,9 @@ dotenv.config({ path: `${__dirname}/config/.env` });
 // Import custom modules
 const auth = require('./routes/auth.route.js');
 const User = require('./models/user.model');
-const Session = require('./models/session.model')
+const Report = require('./models/report.model');
+const Session = require('./models/session.model');
+const subscriber = require('./middleware/mqttSubscriber');
 
 // Initialise app
 const app = express();                      // Define app

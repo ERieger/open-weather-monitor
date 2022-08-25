@@ -5,7 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-dev": "nodemon ./base-station/src/server.js"
+    "start-dev": "nodemon ./base-station/src/server.js",
+    "sub-mqtt": "mosquitto_sub -h 127.0.0.1 -t nodes/reports/+",
+    "pub-mqtt": "mosquitto_pub -h 127.0.0.1 -m '{\"stationId\": \"station1\",\"wind\": {\"speed\": 15,\"direction\": 240,\"gust\": 25,\"gustDirection\": 300},\"rainfall\": 7,\"temperature\": 13,\"pressure\": 1029,\"relHumidity\": 90,\"light\": 30,\"system\": {\"battery\": 98}}' -t nodes/reports/station1",
+    "start-mqtt": "mosquitto"
   },
   "repository": {
     "type": "git",
@@ -28,6 +31,8 @@
     "express": "^4.18.1",
     "express-session": "^1.17.3",
     "mongoose": "^6.5.2",
+    "mqtt": "^4.3.7",
+    "mqtt-pattern": "^1.2.0",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^7.1.2",

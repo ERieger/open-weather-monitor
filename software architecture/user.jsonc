@@ -1,3 +1,9 @@
+// User data schema
 {
-    
+    "username": "String",
+    "password": "String",
+    "role": "String",
+    "salt": "String",
+    "hash": "String",
+    "__v": "Int"
 }

@@ -1,0 +1,18 @@
+// Station report schema
+{
+    "stationId": "String",
+    "wind": {
+        "speed": "Int",
+        "direction": "Int",
+        "gust": "Int",
+        "gustDirection": "Int"
+    },
+    "rainfall": "Int",
+    "temperature": "Int",
+    "pressure": "Int",
+    "relHumidity": "Int",
+    "light": "Int",
+    "system": {
+        "battery": "Int"
+    }
+}
