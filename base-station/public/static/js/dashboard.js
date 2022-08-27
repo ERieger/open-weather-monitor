@@ -1,10 +1,94 @@
 // Leaflets map config
-let map = L.map('map').setView([-34.9831874,138.628318], 12.35);
+let map = L.map('map').setView([-34.9507911, 138.6029232], 12.35);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '© OpenStreetMap'
 }).addTo(map);
+
+let stationMarkers = L.layerGroup().addTo(map);
+let stationIcon = L.icon({
+    iconUrl: '/images/stationIcon.svg',
+    shadowUrl: '/images/stationShadow.svg',
+
+    iconSize: [35, 35], // size of the icon
+    shadowSize: [40, 40], // size of the shadow
+    iconAnchor: [17.5, 17.5], // point of the icon which will correspond to marker's location
+    shadowAnchor: [20, 20],  // the same for the shadow
+    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+
+});
+
+function getStations() {
+    let docs;
+    $.ajax({
+        type: 'GET',
+        async: false,
+        url: '/api/stations',
+        dataType: 'json',
+        success: function (data) {
+            docs = data;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('error ' + textStatus + " " + errorThrown);
+        }
+    });
+
+    return docs;
+}
+
+window.onload = () => {
+    toggleRefreshButton();
+
+    updateMap(getStations());
+    toggleRefreshButton();
+};
+
+async function updatePage(station) {
+    let data = getStations();
+
+    toggleRefreshButton();
+
+    await clearPage();
+    updateMap(data);
+
+    toggleRefreshButton();
+}
+
+function clearPage() {
+    stationMarkers.clearLayers();
+}
+
+function updateMap(stations) {
+    stations.forEach((station) => {
+        if (station.status == true) {
+            let stationMarker = new L.marker([station.loc.lat, station.loc.lon], { icon: stationIcon })
+                .on("click", (e) => {
+                    updatePage(station.stationId);
+                })
+                .addTo(stationMarkers);
+        }
+    });
+
+    stationMarkers.addTo(map);
+}
+
+function toggleRefreshButton() {
+    let spinner = $('#refreshSpinner');
+    let button = $('#refreshBtn');
+
+    if (spinner.hasClass('d-none')) {
+        button.toggleClass('d-none');
+        spinner.toggleClass('d-block');
+        spinner.toggleClass('d-none');
+    } else {
+        spinner.toggleClass('d-none');
+        button.toggleClass('d-block');
+        button.toggleClass('d-none');
+    }
+}
+
+$('#refreshBtn').click(() => updatePage());
 
 // Quick peek charts
 function renderWindPeek() {

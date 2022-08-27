@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-dev": "nodemon ./base-station/src/server.js",
     "sub-mqtt": "mosquitto_sub -h 127.0.0.1 -t nodes/reports/+",
-    "pub-mqtt": "mosquitto_pub -h 127.0.0.1 -m '{\"stationId\": \"station1\",\"wind\": {\"speed\": 15,\"direction\": 240,\"gust\": 25,\"gustDirection\": 300},\"rainfall\": 7,\"temperature\": 13,\"pressure\": 1029,\"relHumidity\": 90,\"light\": 30,\"system\": {\"battery\": 98}}' -t nodes/reports/station1",
+    "pub-mqtt": "mosquitto_pub -h 127.0.0.1 -m '{\"stationId\": \"7e95045d-4f0e-41d5-9d8d-6317bbd0cc30\", \"time\": \"Fri Aug 26 2022 18:26:30 GMT+0930 (Australian Central Standard Time)\", \"wind\": {\"speed\": 15,\"direction\": 240,\"gust\": 25,\"gustDirection\": 300},\"rainfall\": 7,\"temperature\": 13,\"pressure\": 1029,\"relHumidity\": 90,\"light\": 30,\"system\": {\"battery\": 98}}' -t nodes/reports/station1",
     "start-mqtt": "mosquitto"
   },
   "repository": {

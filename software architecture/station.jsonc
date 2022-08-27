@@ -2,9 +2,11 @@
 {
     "stationId": "String",
     "name": "String",
-    
+    "lastUpdate": "Date",
     "loc": {
-        "lat": "Int",
-        "Lon": "Int"
-    }
+        "lat": "Number",
+        "Lon": "Number"
+    },
+    "Sensors": ["String"],
+    "battery": "Number"
 }

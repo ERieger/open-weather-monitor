@@ -13,9 +13,11 @@ const dotenv = require('dotenv');
 dotenv.config({ path: `${__dirname}/config/.env` });
 
 // Import custom modules
-const auth = require('./routes/auth.route.js');
+const auth = require('./routes/auth.route');
+const api = require('./routes/api.route')
 const User = require('./models/user.model');
 const Report = require('./models/report.model');
+const Station = require('./models/station.model');
 const Session = require('./models/session.model');
 const subscriber = require('./middleware/mqttSubscriber');
 
@@ -26,9 +28,9 @@ app.set('view engine', 'pug');              // Set view engine
 
 // Connect to database - load values form environment variables
 mongoose.connect(`mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`, {
-    dbName: process.env.MONGO_DATABASE,
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+  dbName: process.env.MONGO_DATABASE,
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 });
 
 // Set reference to static files
@@ -54,6 +56,8 @@ app.use(session({
   cookie: { maxAge: 60 * 60 * 1000, secure: false },    // 1 hour, allow http
 }));
 
+app.use('/api', api);                                   // Api routes
+
 app.use(bodyParser.urlencoded({ extended: false }));    // Initialise body parser
 app.use(passport.initialize());                         // Initialise passport
 app.use(passport.session());                            // Initialise session
@@ -69,18 +73,34 @@ const port = config.port;                               // Get selected server p
 
 // Function to register a new user
 // User.register({ username: 'test', active: false }, 'test');
+// Station.create({
+//     'stationId': uuidv4(),
+//     'name': 'Concordia College',
+//     'lastUpdate': 'Fri Aug 26 2022 14:03:11 GMT+0930 (Australian Central Standard Time)',
+//     'loc': {
+//         'lat': -34.9599627,
+//         'lon': 138.6144814
+//     },
+//     status: false,
+//     'sensors': ['temperature', 'humidity', 'windSpeed', 'windDirection', 'pressure', 'rainfall', 'light'],
+//     'battery': 98
+// }, function (err, small) {
+//   if (err) return handleError(err);
+//   // saved!
+// });
 
 // Routing
 app.get('/', (req, res) => {            // Homepage
   res.send('<h1>Index Page</h1>');
 });
+
 app.use('/login', auth);                // Login routes
 
 // Authenticate users
 app.post('/authenticate', passport.authenticate('local', { successReturnToOrRedirect: '/dashboard', failureRedirect: '/' }));
 
 // Logout users
-app.get('/logout', (req, res) => {
+app.get('/logout', (req, res, next) => {
   req.logout((err) => {
     if (err) { return next(err); }
     res.redirect('/login');
@@ -89,7 +109,20 @@ app.get('/logout', (req, res) => {
 
 // Dashboard (ensures auth state)
 app.get('/dashboard', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
-  res.render(path.join('./index.pug'));
+  let pageData = {
+    stations: undefined
+  }
+
+  const sendData = () => { res.render(path.join('./index.pug'), pageData) };
+
+  Station.find({}, function (err, stations) {
+    if (err) { console.log(err) } else {
+      pageData.stations = stations;
+      // console.log(1, pageData);
+      sendData();
+    }
+  });
+
 });
 
 app.get('/authtest', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
@@ -97,7 +130,7 @@ app.get('/authtest', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
    and your session expires in ${req.session.cookie.maxAge} 
    milliseconds.<br><br>
    <a href="/logout">Log Out</a><br><br>`);
-   console.log(req);
+  console.log(req);
 });
 
 // Start server listening on selected port

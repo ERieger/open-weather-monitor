@@ -1,0 +1,17 @@
+mixin station-row(index, id, name, status, lat, lon)
+    tr
+        td(data-bs-toggle="tooltip" data-bs-placement="top" title=`${id}`)= index
+        td.text-muted= name
+        td
+            if status
+                span.status-indicator.status-green.status-indicator-animated(data-bs-toggle="tooltip" data-bs-placement="top" title="Active")
+                    span.status-indicator-circle
+                    span.status-indicator-circle
+                    span.status-indicator-circle
+            else
+                span.status-indicator.status-red(data-bs-toggle="tooltip" data-bs-placement="top" title="Offline")
+                    span.status-indicator-circle
+        td.text-muted= lat
+        td.text-muted= lon
+        td
+            a.btn.btn-primary(href='#' class=status ? '' : 'disabled' onclick="updatePage(`${id}`)") Select

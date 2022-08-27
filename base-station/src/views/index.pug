@@ -1,4 +1,5 @@
 doctype html
+include ../mixins/dashboard.mixins.pug
 html(lang='en')
     head
         meta(charset='UTF-8')
@@ -127,6 +128,15 @@ html(lang='en')
                                             line(x1='5' y1='12' x2='5' y2='12.01')
                                             line(x1='5' y1='18' x2='5' y2='18.01')
                                         | Station List
+                                li.nav-item
+                                    a.nav-link
+                                        svg.icon.icon-tabler.icon-tabler-refresh#refreshBtn(xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewbox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round')
+                                            path(stroke='none' d='M0 0h24v24H0z' fill='none')
+                                            path(d='M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4')
+                                            path(d='M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4')
+                                        // Display inline block to show
+                                        div.spinner-border.spinner-border-sm.d-none#refreshSpinner(role="status")
+
                             .tab-content
                                 // Content of card #1
                                 #tab-top-1.card.tab-pane.active.show
@@ -151,36 +161,31 @@ html(lang='en')
                                                             th Lon
                                                             th.w-1
                                                     tbody
-                                                        tr
-                                                            td 1
-                                                            td.text-muted
-                                                                | Concordia College
-                                                            td
-                                                                span.status-indicator.status-green.status-indicator-animated
-                                                                    span.status-indicator-circle
-                                                                    span.status-indicator-circle
-                                                                    span.status-indicator-circle
-                                                            td.text-muted
-                                                                | -34.9598192
-                                                            td.text-muted
-                                                                | 138.6175679
-                                                            td
-                                                                a.btn.btn-primary(href='#')
-                                                                    | Select
-                                                        tr
-                                                            td 2
-                                                            td.text-muted
-                                                                | Home
-                                                            td
-                                                                span.status-indicator.status-red
-                                                                    span.status-indicator-circle
-                                                            td.text-muted
-                                                                | -35.026167
-                                                            td.text-muted
-                                                                | 138.6251429
-                                                            td
-                                                                a.btn.btn-primary.disabled(href='#')
-                                                                    | Select
+                                                        each station, index in stations
+                                                            +station-row(index, station.stationId, station.name, station.status, station.loc.lat, station.loc.lon)
+                                                        //- tr
+                                                        //-     td 1
+                                                        //-     td.text-muted
+                                                        //-         | Concordia College
+                                                        //-     td
+                                                        //-         span.status-indicator.status-green.status-indicator-animated(data-bs-toggle="tooltip" data-bs-placement="top" title="Active")
+                                                        //-             span.status-indicator-circle
+                                                        //-             span.status-indicator-circle
+                                                        //-             span.status-indicator-circle
+                                                        //-     td.text-muted -34.9598192
+                                                        //-     td.text-muted 138.6175679
+                                                        //-     td
+                                                        //-         a.btn.btn-primary(href='#') Select
+                                                        //- tr
+                                                        //-     td 2
+                                                        //-     td.text-muted Home
+                                                        //-     td
+                                                        //-         span.status-indicator.status-red(data-bs-toggle="tooltip" data-bs-placement="top" title="Offline")
+                                                        //-             span.status-indicator-circle
+                                                        //-     td.text-muted -35.026167
+                                                        //-     td.text-muted 138.6251429
+                                                        //-     td
+                                                        //-         a.btn.btn-primary.disabled(href='#') Select
                     .col-lg
                         .row.mt-3.mt-lg-0
                             .col-lg
