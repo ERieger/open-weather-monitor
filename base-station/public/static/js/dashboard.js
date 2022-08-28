@@ -16,8 +16,26 @@ let stationIcon = L.icon({
     iconAnchor: [17.5, 17.5], // point of the icon which will correspond to marker's location
     shadowAnchor: [20, 20],  // the same for the shadow
     popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-
 });
+
+const now = new Date();
+
+let station = (() => {
+    let result = undefined;
+    $.ajax({
+        type: 'GET',
+        async: false,
+        url: '/api/firstStation',
+        dataType: 'json',
+        success: function (data) {
+            result = data;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('error ' + textStatus + " " + errorThrown);
+        }
+    });
+    return result;
+})();
 
 function getStations() {
     let docs;
@@ -41,12 +59,19 @@ window.onload = () => {
     toggleRefreshButton();
 
     updateMap(getStations());
+
+    renderWindPeek();
+    renderTempPeek();
+    renderHumidityPeek();
+    renderRainPeek();
+    renderWindDirectionChart();
+    renderTemperatureChart();
+
     toggleRefreshButton();
 };
 
 async function updatePage(station) {
     let data = getStations();
-
     toggleRefreshButton();
 
     await clearPage();
@@ -92,44 +117,28 @@ $('#refreshBtn').click(() => updatePage());
 
 // Quick peek charts
 function renderWindPeek() {
+    let wind = null;
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: '/api/windSpeed',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            station: station.stationId,
+            timescale: now
+        }),
+        success: function (data) {
+            wind = data;
+            console.log(wind);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('error ' + textStatus + " " + errorThrown);
+        }
+    });
+
     var options = {
-        series: [{
-            name: 'Wind (km/h)',
-            data: [{
-                y: 15,
-                x: 0
-            }, {
-                y: 20,
-                x: 1
-            }, {
-                y: 15,
-                x: 2
-            }, {
-                y: 5,
-                x: 3
-            }, {
-                y: 20,
-                x: 4
-            }, {
-                y: 17,
-                x: 5
-            }, {
-                y: 20,
-                x: 6
-            }, {
-                y: 26,
-                x: 7
-            }, {
-                y: 30,
-                x: 8
-            }, {
-                y: 6,
-                x: 9
-            }, {
-                y: 3,
-                x: 10
-            },]
-        }],
+        series: [wind],
         chart: {
             type: 'area',
             height: '100%',
@@ -147,6 +156,7 @@ function renderWindPeek() {
             enabled: false
         },
         xaxis: {
+            type: 'datetime',
             floating: true,
             axisTicks: {
                 show: false
@@ -181,44 +191,27 @@ function renderWindPeek() {
 }
 
 function renderTempPeek() {
+    let temp = null;
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: '/api/temperature',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            station: station.stationId,
+            timescale: now
+        }),
+        success: function (data) {
+            temp = data;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('error ' + textStatus + " " + errorThrown);
+        }
+    });
+
     var options = {
-        series: [{
-            name: 'Temperature (°C)',
-            data: [{
-                y: 5,
-                x: 0
-            }, {
-                y: 7,
-                x: 1
-            }, {
-                y: 10,
-                x: 2
-            }, {
-                y: 11,
-                x: 3
-            }, {
-                y: 15,
-                x: 4
-            }, {
-                y: 17,
-                x: 5
-            }, {
-                y: 18,
-                x: 6
-            }, {
-                y: 16,
-                x: 7
-            }, {
-                y: 12,
-                x: 8
-            }, {
-                y: 6,
-                x: 9
-            }, {
-                y: 3,
-                x: 10
-            },]
-        }],
+        series: [temp],
         chart: {
             type: 'area',
             height: '100%',
@@ -236,6 +229,7 @@ function renderTempPeek() {
             enabled: false
         },
         xaxis: {
+            type: 'datetime',
             floating: true,
             axisTicks: {
                 show: false
@@ -514,10 +508,3 @@ function renderTemperatureChart() {
     var chart = new ApexCharts(document.querySelector("#temperature-chart"), options);
     chart.render();
 }
-
-renderWindPeek();
-renderTempPeek();
-renderHumidityPeek();
-renderRainPeek();
-renderWindDirectionChart();
-renderTemperatureChart();

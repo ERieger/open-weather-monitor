@@ -163,29 +163,6 @@ html(lang='en')
                                                     tbody
                                                         each station, index in stations
                                                             +station-row(index, station.stationId, station.name, station.status, station.loc.lat, station.loc.lon)
-                                                        //- tr
-                                                        //-     td 1
-                                                        //-     td.text-muted
-                                                        //-         | Concordia College
-                                                        //-     td
-                                                        //-         span.status-indicator.status-green.status-indicator-animated(data-bs-toggle="tooltip" data-bs-placement="top" title="Active")
-                                                        //-             span.status-indicator-circle
-                                                        //-             span.status-indicator-circle
-                                                        //-             span.status-indicator-circle
-                                                        //-     td.text-muted -34.9598192
-                                                        //-     td.text-muted 138.6175679
-                                                        //-     td
-                                                        //-         a.btn.btn-primary(href='#') Select
-                                                        //- tr
-                                                        //-     td 2
-                                                        //-     td.text-muted Home
-                                                        //-     td
-                                                        //-         span.status-indicator.status-red(data-bs-toggle="tooltip" data-bs-placement="top" title="Offline")
-                                                        //-             span.status-indicator-circle
-                                                        //-     td.text-muted -35.026167
-                                                        //-     td.text-muted 138.6251429
-                                                        //-     td
-                                                        //-         a.btn.btn-primary.disabled(href='#') Select
                     .col-lg
                         .row.mt-3.mt-lg-0
                             .col-lg

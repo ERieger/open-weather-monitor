@@ -16,7 +16,7 @@ dotenv.config({ path: `${__dirname}/config/.env` });
 const auth = require('./routes/auth.route');
 const api = require('./routes/api.route')
 const User = require('./models/user.model');
-const Report = require('./models/report.model');
+const Reports = require('./models/report.model');
 const Station = require('./models/station.model');
 const Session = require('./models/session.model');
 const subscriber = require('./middleware/mqttSubscriber');
@@ -108,21 +108,18 @@ app.get('/logout', (req, res, next) => {
 });
 
 // Dashboard (ensures auth state)
-app.get('/dashboard', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
-  let pageData = {
-    stations: undefined
-  }
-
+app.get('/dashboard', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
   const sendData = () => { res.render(path.join('./index.pug'), pageData) };
 
-  Station.find({}, function (err, stations) {
-    if (err) { console.log(err) } else {
-      pageData.stations = stations;
-      // console.log(1, pageData);
-      sendData();
-    }
-  });
+  let stations = await Station.find({});
 
+  let reports = await Reports.find({});
+
+  let pageData = {
+    stations: stations
+  }
+
+  sendData();
 });
 
 app.get('/authtest', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
@@ -130,7 +127,6 @@ app.get('/authtest', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
    and your session expires in ${req.session.cookie.maxAge} 
    milliseconds.<br><br>
    <a href="/logout">Log Out</a><br><br>`);
-  console.log(req);
 });
 
 // Start server listening on selected port
