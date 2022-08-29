@@ -15,7 +15,7 @@ client.on('connect', () => {
 client.on('message', (topicMsg, message, packet) => {
     if (mqttPattern.matches(topic, topicMsg)) {
         let report = JSON.parse(message);
-        console.log(report);
+        console.log(`Report recieved from ${report.stationId}: `, report);
         Report.create((report), function (err) {
             if (err) return handleError(err);
         });
