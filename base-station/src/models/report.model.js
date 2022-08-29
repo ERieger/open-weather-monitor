@@ -3,7 +3,11 @@ const Schema = mongoose.Schema;
 
 const Report = new Schema({
     'stationId': String,
-    'time': Date,
+    'time': {
+        type: Date,
+        required: true,
+        default: Date.now,
+      },
     'wind': {
         'speed': Number,
         'direction': Number,

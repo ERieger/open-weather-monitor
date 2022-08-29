@@ -18,7 +18,8 @@ let stationIcon = L.icon({
     popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
 });
 
-const now = new Date();
+const d = new Date();
+const start = new Date(d.getFullYear(), d.getMonth(), d.getDay(), 00, 00, 00, 00).toUTCString();
 
 let station = (() => {
     let result = undefined;
@@ -70,11 +71,11 @@ window.onload = () => {
     toggleRefreshButton();
 };
 
-async function updatePage(station) {
+function updatePage(station) {
     let data = getStations();
     toggleRefreshButton();
 
-    await clearPage();
+    clearPage();
     updateMap(data);
 
     toggleRefreshButton();
@@ -126,7 +127,7 @@ function renderWindPeek() {
         contentType: 'application/json',
         data: JSON.stringify({
             station: station.stationId,
-            timescale: now
+            timescale: start
         }),
         success: function (data) {
             wind = data;
@@ -200,7 +201,7 @@ function renderTempPeek() {
         contentType: 'application/json',
         data: JSON.stringify({
             station: station.stationId,
-            timescale: now
+            timescale: start
         }),
         success: function (data) {
             temp = data;

@@ -28,9 +28,10 @@ router.get('/firstStation', async function (req, res) {
 
 // Api routes to package data for graphs
 router.post('/windSpeed', async function (req, res) {
-    console.log(req.body.station);
+    const start = req.body.timescale;
+    console.log(start);
 
-    let reports = await Reports.find({ stationId: req.body.station, time: {$gte: req.body.timescale} });
+    let reports = await Reports.find({ stationId: req.body.station, time: {$gt: start} });
 
     let data = {
         name: 'Wind (km/h)',
@@ -51,11 +52,11 @@ router.post('/windSpeed', async function (req, res) {
 });
 
 router.post('/temperature', async function (req, res) {
-    console.log(req.body.timescale);
+    const start = req.body.timescale;
+    console.log(start);
 
-    let reports = await Reports.find({ stationId: req.body.station, time: {$gte: req.body.timescale}});
+    let reports = await Reports.find({ stationId: req.body.station, time: {$gt: start}});
 
-    console.log(Reports.find({ stationId: req.body.station, time: {$gte: req.body.timescale}}))
     let data = {
         name: 'Temperature (°C)',
         data: (() => {
