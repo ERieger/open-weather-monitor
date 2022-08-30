@@ -18,11 +18,10 @@ router.get('/stations', function (req, res) {
 
 router.get('/firstStation', async function (req, res) {
     let stations = await Station.find({});
-    // console.log(stations);
 
     for (let i = 0; i < stations.length && stations[i].status != false; i++) {
-        // console.log(stations[i]);
         res.send(stations[i]);
+        break;
     }
 });
 

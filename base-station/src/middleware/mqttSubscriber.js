@@ -3,26 +3,21 @@ const mqttPattern = require('mqtt-pattern');        // Validate if message match
 const client = mqtt.connect('mqtt://127.0.0.1');    // Create a client
 const Report = require('../models/report.model');
 const Station = require('../models/station.model');
-const topic = 'nodes/reports/+'
+const reportTopic = 'nodes/reports/+';
 
 client.on('connect', () => {
-    client.subscribe(topic, (err, granted) => {
+    client.subscribe(reportTopic, (err, granted) => {
         if (err) { console.log(err) };
         console.log(granted, 'granted');
     });
 });
 
-client.on('message', (topicMsg, message, packet) => {
-    if (mqttPattern.matches(topic, topicMsg)) {
+client.on('message', async (topicMsg, message, packet) => {
+    if (mqttPattern.matches(reportTopic, topicMsg)) {
         let report = JSON.parse(message);
         console.log(`Report recieved from ${report.stationId}: `, report);
-        Report.create((report), function (err) {
-            if (err) return handleError(err);
-        });
-        
-        Station.updateOne({ stationId: report.stationId }, { lastUpdate: report.time, status: true }, function (err) {
-            if (err) return handleError(err);
-        });
+        await Report.create((report), function (err) { if (err) return handleError(err) });
+        await Station.updateOne({ stationId: report.stationId }, { lastUpdate: report.time, status: true }, function (err) { if (err) return handleError(err) });
     }
 });
 

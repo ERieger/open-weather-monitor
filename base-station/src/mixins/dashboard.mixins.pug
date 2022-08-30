@@ -14,4 +14,4 @@ mixin station-row(index, id, name, status, lat, lon)
         td.text-muted= lat
         td.text-muted= lon
         td
-            a.btn.btn-primary(href='#' class=status ? '' : 'disabled' onclick="updatePage(`${id}`)") Select
+            a.btn.btn-primary(onclick=`updatePage('${id}')` class=status ? '' : 'disabled') Select

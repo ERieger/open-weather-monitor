@@ -75,11 +75,11 @@ const port = config.port;                               // Get selected server p
 // User.register({ username: 'test', active: false }, 'test');
 // Station.create({
 //     'stationId': uuidv4(),
-//     'name': 'Concordia College',
+//     'name': 'Adelaide Airport',
 //     'lastUpdate': 'Fri Aug 26 2022 14:03:11 GMT+0930 (Australian Central Standard Time)',
 //     'loc': {
-//         'lat': -34.9599627,
-//         'lon': 138.6144814
+//         'lat': -34.94207364350075, 
+//         'lon': 138.53519808818888
 //     },
 //     status: false,
 //     'sensors': ['temperature', 'humidity', 'windSpeed', 'windDirection', 'pressure', 'rainfall', 'light'],
