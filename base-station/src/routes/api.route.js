@@ -28,7 +28,7 @@ router.get('/firstStation', async function (req, res) {
 
 // Api routes to package data for graphs
 router.post('/windSpeed', async function (req, res) {
-    const start = req.body.timescale;
+    const start = req.body.start;
     console.log(start);
 
     let reports = await Reports.find({ stationId: req.body.station, time: {$gt: start} });
@@ -52,7 +52,7 @@ router.post('/windSpeed', async function (req, res) {
 });
 
 router.post('/temperature', async function (req, res) {
-    const start = req.body.timescale;
+    const start = req.body.start;
     console.log(start);
 
     let reports = await Reports.find({ stationId: req.body.station, time: {$gt: start}});
@@ -65,6 +65,53 @@ router.post('/temperature', async function (req, res) {
                 arr.push({
                     x: report.time,
                     y: report.temperature
+                });
+            });
+
+            return arr;
+        })()
+    };
+
+    res.send(data);
+});
+
+router.post('/humidity', async function (req, res) {
+    const start = req.body.start;
+
+    let reports = await Reports.find({ stationId: req.body.station, time: {$gt: start}});
+
+    let data = {
+        name: 'Humidity (%)',
+        data: (() => {
+            let arr = [];
+            reports.forEach((report, i) => {
+                arr.push({
+                    x: report.time,
+                    y: report.relHumidity
+                });
+            });
+
+            return arr;
+        })()
+    };
+
+    res.send(data);
+});
+
+router.post('/rainfall', async function (req, res) {
+    const start = req.body.start;
+    console.log(start);
+
+    let reports = await Reports.find({ stationId: req.body.station, time: {$gt: start}});
+
+    let data = {
+        name: 'Rainfall (mm)',
+        data: (() => {
+            let arr = [];
+            reports.forEach((report, i) => {
+                arr.push({
+                    x: report.time,
+                    y: report.rainfall
                 });
             });
 

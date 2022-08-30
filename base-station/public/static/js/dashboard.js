@@ -127,7 +127,7 @@ function renderWindPeek() {
         contentType: 'application/json',
         data: JSON.stringify({
             station: station.stationId,
-            timescale: start
+            start: start
         }),
         success: function (data) {
             wind = data;
@@ -201,7 +201,7 @@ function renderTempPeek() {
         contentType: 'application/json',
         data: JSON.stringify({
             station: station.stationId,
-            timescale: start
+            start: start
         }),
         success: function (data) {
             temp = data;
@@ -265,44 +265,28 @@ function renderTempPeek() {
 }
 
 function renderHumidityPeek() {
+    let humidity = null;
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: '/api/humidity',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            station: station.stationId,
+            start: start
+        }),
+        success: function (data) {
+            humidity = data;
+            console.log(humidity);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('error ' + textStatus + " " + errorThrown);
+        }
+    });
+
     var options = {
-        series: [{
-            name: 'Humidity (%)',
-            data: [{
-                y: 70,
-                x: 0
-            }, {
-                y: 76,
-                x: 1
-            }, {
-                y: 78,
-                x: 2
-            }, {
-                y: 83,
-                x: 3
-            }, {
-                y: 90,
-                x: 4
-            }, {
-                y: 91,
-                x: 5
-            }, {
-                y: 91,
-                x: 6
-            }, {
-                y: 84,
-                x: 7
-            }, {
-                y: 78,
-                x: 8
-            }, {
-                y: 75,
-                x: 9
-            }, {
-                y: 73,
-                x: 10
-            },]
-        }],
+        series: [humidity],
         chart: {
             type: 'area',
             height: '100%',
@@ -320,6 +304,7 @@ function renderHumidityPeek() {
             enabled: false
         },
         xaxis: {
+            type: 'datetime',
             floating: true,
             axisTicks: {
                 show: false
@@ -354,44 +339,28 @@ function renderHumidityPeek() {
 }
 
 function renderRainPeek() {
+    let rainfall = null;
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: '/api/rainfall',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            station: station.stationId,
+            start: start
+        }),
+        success: function (data) {
+            rainfall = data;
+            console.log(rainfall);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('error ' + textStatus + " " + errorThrown);
+        }
+    });
+
     var options = {
-        series: [{
-            name: 'Rainfall (mm)',
-            data: [{
-                y: 0,
-                x: 0
-            }, {
-                y: 0,
-                x: 1
-            }, {
-                y: 0,
-                x: 2
-            }, {
-                y: 2,
-                x: 3
-            }, {
-                y: 2,
-                x: 4
-            }, {
-                y: 2,
-                x: 5
-            }, {
-                y: 5,
-                x: 6
-            }, {
-                y: 5,
-                x: 7
-            }, {
-                y: 7,
-                x: 8
-            }, {
-                y: 8,
-                x: 9
-            }, {
-                y: 10,
-                x: 10
-            },]
-        }],
+        series: [rainfall],
         chart: {
             type: 'area',
             height: '100%',
@@ -409,6 +378,7 @@ function renderRainPeek() {
             enabled: false
         },
         xaxis: {
+            type: 'datetime',
             floating: true,
             axisTicks: {
                 show: false
@@ -477,11 +447,27 @@ function renderWindDirectionChart() {
 
 // Temperature chart
 function renderTemperatureChart() {
+    let temp = null;
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: '/api/temperature',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            station: station.stationId,
+            start: start
+        }),
+        success: function (data) {
+            temp = data;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('error ' + textStatus + " " + errorThrown);
+        }
+    });
+
     var options = {
-        series: [{
-            name: "Temperature (°C)",
-            data: [9, 9, 9, 9, 9, 9.5, 10, 10.2, 11, 11, 11.5, 12.6, 12.5, 12, 12, 11.8, 11.4, 10, 9.8, 9.5, 8.5, 8.3, 8, 7.8]
-        }],
+        series: [temp],
         chart: {
             height: '100%',
             type: 'line',
@@ -502,7 +488,7 @@ function renderTemperatureChart() {
             },
         },
         xaxis: {
-            categories: ['1:00 am', '2:00 am', '3:00 am', '4:00 am', '5:00 am', '6:00 am', '7:00 am', '8:00 am', '9:00 am', '10:00 am', '11:00 am', '12:00 am', '1:00 pm', '2:00 pm', '3:00 pm', '4:00 pm', '5:00 pm', '6:00 pm', '7:00 pm', '8:00 pm', '9:00 pm', '10:00 pm', '11:00 pm', '12:00 pm'],
+            type: 'datetime'
         }
     };
 

@@ -8,7 +8,7 @@
     "start-dev": "nodemon ./base-station/src/server.js",
     "sub-mqtt": "mosquitto_sub -h 127.0.0.1 -t nodes/reports/+",
     "pub-mqtt": "mosquitto_pub -h 127.0.0.1 -m '{\"stationId\": \"7e95045d-4f0e-41d5-9d8d-6317bbd0cc30\", \"time\": \"Mon Aug 29 2022 05:19:27 GMT+0000 (Coordinated Universal Time)\", \"wind\": {\"speed\": 15,\"direction\": 240,\"gust\": 25,\"gustDirection\": 300},\"rainfall\": 7,\"temperature\": 13,\"pressure\": 1029,\"relHumidity\": 90,\"light\": 30,\"system\": {\"battery\": 98}}' -t nodes/reports/station1",
-    "start-mqtt": "mosquitto -c mosquitto.conf"
+    "start-mqtt": "mosquitto -c /etc/mosquitto/conf.d/mosquitto.conf"
   },
   "repository": {
     "type": "git",
