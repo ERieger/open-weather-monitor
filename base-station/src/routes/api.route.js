@@ -4,6 +4,7 @@ const User = require('../models/user.model');
 const Reports = require('../models/report.model');
 const bodyParser = require('body-parser');                      // Parse incoming request body to req.body
 const router = express.Router();
+const Compass = require("cardinal-direction");
 
 router.use(bodyParser.urlencoded({ extended: false }));    // Initialise body parser
 router.use(bodyParser.json());
@@ -30,7 +31,7 @@ router.post('/windSpeed', async function (req, res) {
     const start = req.body.start;
     console.log(start);
 
-    let reports = await Reports.find({ stationId: req.body.station, time: {$gt: start} });
+    let reports = await Reports.find({ stationId: req.body.station, time: { $gt: start } });
 
     let data = {
         name: 'Wind (km/h)',
@@ -42,7 +43,6 @@ router.post('/windSpeed', async function (req, res) {
                     y: report.wind.speed
                 });
             });
-
             return arr;
         })()
     };
@@ -52,9 +52,8 @@ router.post('/windSpeed', async function (req, res) {
 
 router.post('/temperature', async function (req, res) {
     const start = req.body.start;
-    console.log(start);
 
-    let reports = await Reports.find({ stationId: req.body.station, time: {$gt: start}});
+    let reports = await Reports.find({ stationId: req.body.station, time: { $gt: start } });
 
     let data = {
         name: 'Temperature (°C)',
@@ -77,7 +76,8 @@ router.post('/temperature', async function (req, res) {
 router.post('/humidity', async function (req, res) {
     const start = req.body.start;
 
-    let reports = await Reports.find({ stationId: req.body.station, time: {$gt: start}});
+    let reports = await Reports.find({ stationId: req.body.station, time: { $gt: start } });
+    console.log({ stationId: req.body.station, time: { $gt: start } });
 
     let data = {
         name: 'Humidity (%)',
@@ -99,9 +99,8 @@ router.post('/humidity', async function (req, res) {
 
 router.post('/rainfall', async function (req, res) {
     const start = req.body.start;
-    console.log(start);
 
-    let reports = await Reports.find({ stationId: req.body.station, time: {$gt: start}});
+    let reports = await Reports.find({ stationId: req.body.station, time: { $gt: start } });
 
     let data = {
         name: 'Rainfall (mm)',
@@ -117,6 +116,56 @@ router.post('/rainfall', async function (req, res) {
             return arr;
         })()
     };
+
+    res.send(data);
+});
+
+router.post(('/windDirection'), async function (req, res) {
+    const start = req.body.start;
+    let directionTotals = {
+        N: [],
+        NNE: [],
+        NE: [],
+        ENE: [],
+        E: [],
+        ESE: [],
+        SE: [],
+        SSE: [],
+        S: [],
+        SSW: [],
+        SW: [],
+        WSW: [],
+        W: [],
+        WNW: [],
+        NW: [],
+        NNW: []
+    }
+    let data = [];
+
+    let reports = await Reports.find({ stationId: req.body.station, time: { $gt: start } })
+
+    reports.forEach((report, index) => {
+        let direction = Compass.cardinalFromDegree(report.wind.direction, Compass.CardinalSubset.Intercardinal);
+        directionTotals[direction].push(report.wind.speed);
+    });
+
+    for (const property in directionTotals) {
+        if (directionTotals[property].length < 1) {
+            data.push(0)
+            continue;
+        } else {
+            let average = (() => {
+                let sum = 0;
+                directionTotals[property].forEach((number) => {
+                    sum += number;
+                });
+
+                let average = sum / (directionTotals[property].length);
+                return average;
+            })();
+            data.push(average);
+        }
+    }
 
     res.send(data);
 });
