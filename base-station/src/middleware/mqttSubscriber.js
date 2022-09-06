@@ -3,10 +3,10 @@ const mqttPattern = require('mqtt-pattern');        // Validate if message match
 const Report = require('../models/report.model');
 const Station = require('../models/station.model');
 const config = require("../config/config");          // Load config json
-const client = mqtt.connect(config.mqtt.broker);    // Create a client
+const client = mqtt.connect(config.mqtt.url, config.mqtt.options);    // Create a client
 const reportTopic = config.mqtt.reportTopic;
 
-client.on('connect', () => {
+client.on('connect', () => {    
     client.subscribe(reportTopic, (err, granted) => {
         if (err) { console.log(err) };
         console.log(granted, 'granted');
