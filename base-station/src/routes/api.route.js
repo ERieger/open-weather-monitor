@@ -26,12 +26,19 @@ router.get('/firstStation', async function (req, res) {
     }
 });
 
-// Api routes to package data for graphs
-router.post('/windSpeed', async function (req, res) {
-    const start = req.body.start;
-    console.log(start);
+router.get('/totals', async function (req, res) {
+    const obj = req.query;
+    const start = obj.start;
+    let reports = await Reports.findOne({ stationId: obj.station, time: { $gt: start } });
+    res.send(reports);
+});
 
-    let reports = await Reports.find({ stationId: req.body.station, time: { $gt: start } });
+// Api routes to package data for graphs
+router.get('/windSpeed', async function (req, res) {
+    const obj = req.query;
+    const start = obj.start;
+
+    let reports = await Reports.find({ stationId: obj.station, time: { $gt: start } });
 
     let data = {
         name: 'Wind (km/h)',
@@ -50,10 +57,11 @@ router.post('/windSpeed', async function (req, res) {
     res.send(data);
 });
 
-router.post('/temperature', async function (req, res) {
-    const start = req.body.start;
+router.get('/temperature', async function (req, res) {
+    const obj = req.query;
+    const start = obj.start;
 
-    let reports = await Reports.find({ stationId: req.body.station, time: { $gt: start } });
+    let reports = await Reports.find({ stationId: obj.station, time: { $gt: start } });
 
     let data = {
         name: 'Temperature (°C)',
@@ -73,10 +81,11 @@ router.post('/temperature', async function (req, res) {
     res.send(data);
 });
 
-router.post('/humidity', async function (req, res) {
-    const start = req.body.start;
+router.get('/humidity', async function (req, res) {
+    const obj = req.query;
+    const start = obj.start;
 
-    let reports = await Reports.find({ stationId: req.body.station, time: { $gt: start } });
+    let reports = await Reports.find({ stationId: obj.station, time: { $gt: start } });
     console.log({ stationId: req.body.station, time: { $gt: start } });
 
     let data = {
@@ -97,10 +106,11 @@ router.post('/humidity', async function (req, res) {
     res.send(data);
 });
 
-router.post('/rainfall', async function (req, res) {
-    const start = req.body.start;
+router.get('/rainfall', async function (req, res) {
+    const obj = req.query;
+    const start = obj.start;
 
-    let reports = await Reports.find({ stationId: req.body.station, time: { $gt: start } });
+    let reports = await Reports.find({ stationId: obj.station, time: { $gt: start } });
 
     let data = {
         name: 'Rainfall (mm)',
@@ -120,8 +130,10 @@ router.post('/rainfall', async function (req, res) {
     res.send(data);
 });
 
-router.post(('/windDirection'), async function (req, res) {
-    const start = req.body.start;
+router.get(('/windDirection'), async function (req, res) {
+    const obj = req.query;
+    const start = obj.start;
+    
     let directionTotals = {
         N: [],
         NNE: [],
@@ -142,7 +154,7 @@ router.post(('/windDirection'), async function (req, res) {
     }
     let data = [];
 
-    let reports = await Reports.find({ stationId: req.body.station, time: { $gt: start } })
+    let reports = await Reports.find({ stationId: obj.station, time: { $gt: start } })
 
     reports.forEach((report, index) => {
         let direction = Compass.cardinalFromDegree(report.wind.direction, Compass.CardinalSubset.Intercardinal);

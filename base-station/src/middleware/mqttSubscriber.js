@@ -16,6 +16,8 @@ client.on('connect', () => {
 client.on('message', async (topicMsg, message, packet) => {
     if (mqttPattern.matches(reportTopic, topicMsg)) {
         let report = JSON.parse(message);
+        let epochConversion = new Date(report.time*1000);
+        report.time = new Date(epochConversion);
         console.log(`Report recieved from ${report.stationId}: `, report);
         await Report.create((report));
         await Station.updateOne({ stationId: report.stationId }, { lastUpdate: report.time, status: true });

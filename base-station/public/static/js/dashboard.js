@@ -1,7 +1,6 @@
 let d = new Date();
 d.setHours(0, 0, 0, 0);
 const start = d;
-console.log(start)
 
 const peekGraphTemplate = {
     series: [],
@@ -57,9 +56,7 @@ const peekGraphTemplate = {
 $('#refreshBtn').click(() => updatePage(getFirstStation().stationId));
 
 window.onload = () => {
-    let station = getFirstStation();
-    console.log(station)
-    updatePage(station.stationId);
+    updatePage(getFirstStation().stationId);
 };
 
 // Leaflets map config
@@ -95,8 +92,6 @@ function updateMap(stations) {
     stationMarkers.addTo(map);
 }
 
-
-
 function toggleRefreshButton() {
     let spinner = $('#refreshSpinner');
     let button = $('#refreshBtn');
@@ -112,46 +107,11 @@ function toggleRefreshButton() {
     }
 }
 
-function getFirstStation() {
-    let result = undefined;
-    $.ajax({
-        type: 'GET',
-        async: false,
-        url: '/api/firstStation',
-        dataType: 'json',
-        success: function (data) {
-            result = data;
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log('error ' + textStatus + " " + errorThrown);
-        }
-    });
-    return result;
-}
-
-function getStations() {
-    let docs;
-    $.ajax({
-        type: 'GET',
-        async: false,
-        url: '/api/stations',
-        dataType: 'json',
-        success: function (data) {
-            docs = data;
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log('error ' + textStatus + " " + errorThrown);
-        }
-    });
-
-    return docs;
-}
-
 function clearPage() {
     stationMarkers.clearLayers();
 }
 
-async function updatePage(target) {
+function updatePage(target) {
     let stations = getStations();
     $('#refreshBtn').unbind('click');
     $('#refreshBtn').click(() => updatePage(target));
@@ -162,6 +122,14 @@ async function updatePage(target) {
 
     updateMap(stations);
 
+    for (let i = 0; i < stations.length; i++) {
+        if (stations[i].stationId == target) {
+            updateStationInfo(target, stations[i]);
+            break;
+        }
+    }
+
+    updateTotals(target);
     renderWindPeek(target);
     renderTempPeek(target);
     renderHumidityPeek(target);
@@ -172,113 +140,74 @@ async function updatePage(target) {
     toggleRefreshButton();
 }
 
+function updateStationInfo(station, data) {
+    console.log(station, data)
+    $('#node-name').text(data.name);
+    $('#node-loc').text(`${data.loc.lat}, ${data.loc.lon}`);
+
+}
+
+async function updateTotals(station, data) {
+    let report = undefined;
+    if (typeof data == 'undefined') {
+        report = await getTotals(station, start);
+    } else {
+        report = data;
+    }
+
+    $('#wind-speed').text(`${report.wind.speed}km/h`);
+    $('#temperature').text(`${report.temperature}\u00B0C`);
+    $('#rel-humidity').text(`${report.relHumidity}%`);
+    $('#rain').text(`${report.rainfall}mm`);
+}
+
 // Quick peek charts
-function renderWindPeek(station, data) {
+async function renderWindPeek(station, data) {
     var options = Object.assign(peekGraphTemplate, { colors: ['#ae3ec9'] });
     var chart = new ApexCharts(document.querySelector("#wind-peek"), options);
     chart.render();
 
     if (typeof data == 'undefined') {
-        $.ajax({
-            type: 'POST',
-            async: false,
-            url: '/api/windSpeed',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                station: station,
-                start: start
-            }),
-            success: function (data) {
-                chart.updateSeries([data]);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log('error ' + textStatus + " " + errorThrown);
-            }
-        });
+        chart.updateSeries([await getWind(station, start)]);
     } else {
         chart.updateSeries([data]);
     }
 }
 
-function renderTempPeek(station, data) {
+async function renderTempPeek(station, data) {
     var options = Object.assign(peekGraphTemplate, { colors: ['#d63939'] });
     var chart = new ApexCharts(document.querySelector("#temp-peek"), options);
     chart.render();
 
     if (typeof data == 'undefined') {
-        $.ajax({
-            type: 'POST',
-            async: false,
-            url: '/api/temperature',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                station: station,
-                start: start
-            }),
-            success: function (data) {
-                chart.updateSeries([data]);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log('error ' + textStatus + " " + errorThrown);
-            }
-        });
+        chart.updateSeries([await getTemperature(station, start)]);
     } else {
         chart.updateSeries([data]);
     }
 }
-function renderHumidityPeek(station, data) {
+
+async function renderHumidityPeek(station, data) {
     var options = Object.assign(peekGraphTemplate, { colors: ['#2fb344'] });
     var chart = new ApexCharts(document.querySelector("#humidity-peek"), options);
     chart.render();
 
     if (typeof data == 'undefined') {
-        $.ajax({
-            type: 'POST',
-            async: false,
-            url: '/api/humidity',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                station: station,
-                start: start
-            }),
-            success: function (data) {
-                chart.updateSeries([data]);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log('error ' + textStatus + " " + errorThrown);
-            }
-        });
+        chart.updateSeries([await getHumidity(station, start)]);
+
 
     } else {
         chart.updateSeries([data]);
     }
 }
-function renderRainPeek(station, data) {
+
+async function renderRainPeek(station, data) {
     var options = Object.assign(peekGraphTemplate, { colors: ['#4263eb'] });
     var chart = new ApexCharts(document.querySelector("#rain-peek"), options);
     chart.render();
 
     if (typeof data == 'undefined') {
-        $.ajax({
-            type: 'POST',
-            async: false,
-            url: '/api/rainfall',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                station: station,
-                start: start
-            }),
-            success: function (data) {
-                chart.updateSeries([data]);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log('error ' + textStatus + " " + errorThrown);
-            }
-        });
+        chart.updateSeries([await getRainfall(station, start)]);
+
     } else {
         chart.updateSeries([data]);
     }
@@ -287,7 +216,7 @@ function renderRainPeek(station, data) {
 
 
 // Wind direction chart
-function renderWindDirectionChart(station, data) {
+async function renderWindDirectionChart(station, data) {
     var options = {
         series: [],
         labels: [],
@@ -320,26 +249,10 @@ function renderWindDirectionChart(station, data) {
     chart.render();
 
     if (typeof data == 'undefined') {
-        $.ajax({
-            type: 'POST',
-            async: false,
-            url: '/api/windDirection',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                station: station,
-                start: start
-            }),
-            success: function (data) {
-                chart.updateOptions({
-                    labels: ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
-                });
-                chart.updateSeries(data);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log('error ' + textStatus + " " + errorThrown);
-            }
-        });
+        chart.updateOptions({
+            labels: ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
+        }, false, true);
+        chart.updateSeries(await getWindDirection(station, start));
     } else {
         chart.updateOptions({
             labels: ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
@@ -349,7 +262,7 @@ function renderWindDirectionChart(station, data) {
 }
 
 // Temperature chart
-function renderTemperatureChart(station, data) {
+async function renderTemperatureChart(station, data) {
     var options = {
         series: [],
         chart: {
@@ -382,23 +295,7 @@ function renderTemperatureChart(station, data) {
     var chart = new ApexCharts(document.querySelector("#temperature-chart"), options);
     chart.render();
     if (typeof data == 'undefined') {
-        $.ajax({
-            type: 'POST',
-            async: false,
-            url: '/api/temperature',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                station: station,
-                start: start
-            }),
-            success: function (data) {
-                chart.updateSeries([data]);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log('error ' + textStatus + " " + errorThrown);
-            }
-        });
+        chart.updateSeries([await getTemperature(station, start)]);
     } else {
         chart.updateSeries([data]);
     }

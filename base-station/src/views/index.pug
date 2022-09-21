@@ -96,11 +96,9 @@ html(lang='en')
                                 div First Last
                                 .mt-1.small.text-muted Role
                         .dropdown-menu.dropdown-menu-end.dropdown-menu-arrow
-                            a.dropdown-item(href='#') Set status
-                            a.dropdown-item(href='#') Profile &amp; account
-                            a.dropdown-item(href='#') Feedback
+                            a.dropdown-item(href='/dashboard') Dashboard
+                            a.dropdown-item(href='/settings') Settings
                             .dropdown-divider
-                            a.dropdown-item(href='#') Settings
                             a.dropdown-item(href='/logout') Logout
         .page-body.pb-3
             .container
@@ -178,7 +176,7 @@ html(lang='en')
                                                         path(d='M4 16h5.5a2.5 2.5 0 1 1 -2.34 3.24')
                                             .col
                                                 div Wind Speed
-                                                .text-muted 13km/h
+                                                .text-muted#wind-speed Loading...
                                         .row
                                             #wind-peek.chart-sm.h-5.mt-1(style='min-height: 40px;')
                             .col-lg
@@ -193,7 +191,7 @@ html(lang='en')
                                                         line(x1='10' y1='9' x2='14' y2='9')
                                             .col
                                                 div Temperature
-                                                .text-muted 8.4&deg;C
+                                                .text-muted#temperature Loading...
                                         .row
                                             #temp-peek.chart-sm.h-5.mt-1(style='min-height: 40px;')
                         .row.mt-3
@@ -211,7 +209,7 @@ html(lang='en')
                                                         path(d='M12 17.3l5.558 -5.558')
                                             .col
                                                 div Relative Humidity
-                                                .text-muted 89%
+                                                .text-muted#rel-humidity Loading...
                                         .row
                                             #humidity-peek.chart-sm.h-5.mt-1(style='min-height: 40px;')
                             .col-lg
@@ -226,14 +224,14 @@ html(lang='en')
                                                         path(d='M11 13v2m0 3v2m4 -5v2m0 3v2')
                                             .col
                                                 div Rain Today
-                                                .text-muted 10mm
+                                                .text-muted#rain Loading...
                                         .row
                                             #rain-peek.chart-sm.h-5.mt-1(style='min-height: 40px;')
                 .row.mt-3
                     .col
                         .card(style='height: 10rem; background-image: url("https://images.pexels.com/photos/531906/pexels-photo-531906.jpeg?auto=compress&cs=tinysrgb&w=1600");').d-flex.flex-column.justify-content-end
-                            h1.p-2.pb-0.mb-0 Concordia College
-                            p.p-2.pt-0 -34.9598192, 138.6175679
+                            h1.p-2.pb-0.mb-0#node-name
+                            p.p-2.pt-0#node-loc
                 .row.row-deck.mt-3
                     .col-lg-6
                         .card
@@ -254,4 +252,5 @@ html(lang='en')
         script(src='https://unpkg.com/leaflet@1.8.0/dist/leaflet.js' integrity='sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==' crossorigin='')
         script(src='https://cdn.jsdelivr.net/npm/apexcharts')
         // Import custom scripts
+        script(src='/js/clientApi.js')
         script(src='/js/dashboard.js')

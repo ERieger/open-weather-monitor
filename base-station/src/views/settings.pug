@@ -1,0 +1,113 @@
+doctype html
+include ../mixins/dashboard.mixins.pug
+html(lang='en')
+    head
+        meta(charset='UTF-8')
+        title Index
+        link(rel='icon' href='/images/logo.png' type='image/x-icon')
+        link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta11/dist/css/tabler.min.css')
+        link(rel='stylesheet' href='https://unpkg.com/leaflet@1.8.0/dist/leaflet.css' integrity='sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==' crossorigin='')
+        link(rel='stylesheet' href='/css/index.css')
+    body
+        header.navbar.navbar-expand-md.navbar-light.d-print-none
+            .container-xl
+                //
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+                h1.navbar-brand.navbar-brand-autodark.d-none-navbar-horizontal.pe-0.pe-md-3
+                    a(href="/"): img(src="/images/logo.png" alt="logo" width="110" height="32").navbar-brand-image
+                    | Open Weather Monitor
+                .navbar-nav.flex-row.order-md-last
+                    .d-none.d-md-flex
+                        .nav-item.dropdown.d-none.d-md-flex.me-3
+                            a.nav-link.px-0(href='#' data-bs-toggle='dropdown' tabindex='-1' aria-label='Show notifications')
+                                // Download SVG icon from http://tabler-icons.io/i/bell
+                                svg.icon(xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round')
+                                    path(stroke='none' d='M0 0h24v24H0z' fill='none')
+                                    path(d='M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6')
+                                    path(d='M9 17v1a3 3 0 0 0 6 0v-1')
+                                span.badge.bg-red
+                            .dropdown-menu.dropdown-menu-arrow.dropdown-menu-end.dropdown-menu-card
+                                .card
+                                    .card-header
+                                        h3.card-title Last updates
+                                    .list-group.list-group-flush.list-group-hoverable
+                                        .list-group-item
+                                            .row.align-items-center
+                                                .col-auto
+                                                    span.status-dot.status-dot-animated.bg-red.d-block
+                                                .col.text-truncate
+                                                    a.text-body.d-block(href='#') Example 1
+                                                    .d-block.text-muted.text-truncate.mt-n1
+                                                        | Change deprecated html tags to text decoration classes (#29604)
+                                                .col-auto
+                                                    a.list-group-item-actions(href='#')
+                                                        // Download SVG icon from http://tabler-icons.io/i/star
+                                                        svg.icon.text-muted(xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round')
+                                                            path(stroke='none' d='M0 0h24v24H0z' fill='none')
+                                                            path(d='M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z')
+                                        .list-group-item
+                                            .row.align-items-center
+                                                .col-auto
+                                                    span.status-dot.d-block
+                                                .col.text-truncate
+                                                    a.text-body.d-block(href='#') Example 2
+                                                    .d-block.text-muted.text-truncate.mt-n1
+                                                        | justify-content:between &rArr; justify-content:space-between (#29734)
+                                                .col-auto
+                                                    a.list-group-item-actions.show(href='#')
+                                                        // Download SVG icon from http://tabler-icons.io/i/star
+                                                        svg.icon.text-yellow(xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round')
+                                                            path(stroke='none' d='M0 0h24v24H0z' fill='none')
+                                                            path(d='M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z')
+                                        .list-group-item
+                                            .row.align-items-center
+                                                .col-auto
+                                                    span.status-dot.d-block
+                                                .col.text-truncate
+                                                    a.text-body.d-block(href='#') Example 3
+                                                    .d-block.text-muted.text-truncate.mt-n1
+                                                        | Update change-version.js (#29736)
+                                                .col-auto
+                                                    a.list-group-item-actions(href='#')
+                                                        // Download SVG icon from http://tabler-icons.io/i/star
+                                                        svg.icon.text-muted(xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round')
+                                                            path(stroke='none' d='M0 0h24v24H0z' fill='none')
+                                                            path(d='M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z')
+                                        .list-group-item
+                                            .row.align-items-center
+                                                .col-auto
+                                                    span.status-dot.status-dot-animated.bg-green.d-block
+                                                .col.text-truncate
+                                                    a.text-body.d-block(href='#') Example 4
+                                                    .d-block.text-muted.text-truncate.mt-n1
+                                                        | Regenerate package-lock.json (#29730)
+                                                .col-auto
+                                                    a.list-group-item-actions(href='#')
+                                                        // Download SVG icon from http://tabler-icons.io/i/star
+                                                        svg.icon.text-muted(xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round')
+                                                            path(stroke='none' d='M0 0h24v24H0z' fill='none')
+                                                            path(d='M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z')
+                    .nav-item.dropdown
+                        a.nav-link.d-flex.lh-1.text-reset.p-0(href='#' data-bs-toggle='dropdown' aria-label='Open user menu')
+                            span.avatar.avatar-sm(style='background-image: url(./static/avatars/000m.jpg)')
+                            .d-none.d-xl-block.ps-2
+                                div First Last
+                                .mt-1.small.text-muted Role
+                        .dropdown-menu.dropdown-menu-end.dropdown-menu-arrow
+                            a.dropdown-item(href='/dashboard') Dashboard
+                            a.dropdown-item(href='/settings') Settings
+                            .dropdown-divider
+                            a.dropdown-item(href='/logout') Logout
+        .page-body.pb-3
+            .row
+                
+
+        // Import project dependencies
+        script(src='https://code.jquery.com/jquery-3.6.0.min.js' integrity='sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=' crossorigin='anonymous')
+        script(src='https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta11/dist/js/tabler.min.js')
+        script(src='https://unpkg.com/leaflet@1.8.0/dist/leaflet.js' integrity='sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==' crossorigin='')
+        script(src='https://cdn.jsdelivr.net/npm/apexcharts')
+        // Import custom scripts
+        script(src='/js/dashboard.js')

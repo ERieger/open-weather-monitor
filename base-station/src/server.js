@@ -94,6 +94,10 @@ app.get('/', (req, res) => {            // Homepage
   res.send('<h1>Index Page</h1>');
 });
 
+app.get('/settings', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
+  res.render(path.join('./settings.pug'));
+});
+
 app.use('/login', auth);                // Login routes
 
 // Authenticate users
@@ -112,7 +116,6 @@ app.get('/dashboard', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
   const sendData = () => { res.render(path.join('./index.pug'), pageData) };
 
   let stations = await Station.find({});
-
   let reports = await Reports.find({});
 
   let pageData = {

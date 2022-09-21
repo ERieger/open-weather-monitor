@@ -6,5 +6,6 @@
             "port": 1883
         },
         "reportTopic": "nodes/reports/+"
-    }
+    },
+    "listeners": []
 }
