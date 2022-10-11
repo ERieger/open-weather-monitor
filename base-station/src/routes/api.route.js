@@ -27,16 +27,16 @@ router.get('/firstStation', async function (req, res) {
 });
 
 router.get('/totals', async function (req, res) {
-    const obj = req.query;
-    const start = obj.start;
+    let obj = req.query;
+    let start = obj.start;
     let reports = await Reports.findOne({ stationId: obj.station, time: { $gt: start } });
     res.send(reports);
 });
 
 // Api routes to package data for graphs
 router.get('/windSpeed', async function (req, res) {
-    const obj = req.query;
-    const start = obj.start;
+    let obj = req.query;
+    let start = obj.start;
 
     let reports = await Reports.find({ stationId: obj.station, time: { $gt: start } });
 
@@ -58,8 +58,8 @@ router.get('/windSpeed', async function (req, res) {
 });
 
 router.get('/temperature', async function (req, res) {
-    const obj = req.query;
-    const start = obj.start;
+    let obj = req.query;
+    let start = obj.start;
 
     let reports = await Reports.find({ stationId: obj.station, time: { $gt: start } });
 
@@ -82,8 +82,8 @@ router.get('/temperature', async function (req, res) {
 });
 
 router.get('/humidity', async function (req, res) {
-    const obj = req.query;
-    const start = obj.start;
+    let obj = req.query;
+    let start = obj.start;
 
     let reports = await Reports.find({ stationId: obj.station, time: { $gt: start } });
     console.log({ stationId: req.body.station, time: { $gt: start } });
@@ -107,8 +107,8 @@ router.get('/humidity', async function (req, res) {
 });
 
 router.get('/rainfall', async function (req, res) {
-    const obj = req.query;
-    const start = obj.start;
+    let obj = req.query;
+    let start = obj.start;
 
     let reports = await Reports.find({ stationId: obj.station, time: { $gt: start } });
 
@@ -131,8 +131,8 @@ router.get('/rainfall', async function (req, res) {
 });
 
 router.get(('/windDirection'), async function (req, res) {
-    const obj = req.query;
-    const start = obj.start;
+    let obj = req.query;
+    let start = obj.start;
     
     let directionTotals = {
         N: [],
@@ -161,7 +161,7 @@ router.get(('/windDirection'), async function (req, res) {
         directionTotals[direction].push(report.wind.speed);
     });
 
-    for (const property in directionTotals) {
+    for (let property in directionTotals) {
         if (directionTotals[property].length < 1) {
             data.push(0)
             continue;
