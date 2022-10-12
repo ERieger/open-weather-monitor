@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-dev": "nodemon ./base-station/src/server.js",
-    "sub-mqtt": "mosquitto_sub -h 10.1.1.12 -t nodes/reports/+",
-    "pub-mqtt": "mosquitto_pub -h 10.1.1.12 -m '{\"stationId\": \"7e95045d-4f0e-41d5-9d8d-6317bbd0cc30\", \"time\": \"Tue Sep 06 2022 19:03:24 GMT+0930 (Australian Central Standard Time)\", \"wind\": {\"speed\": 15,\"direction\": 240,\"gust\": 25,\"gustDirection\": 300},\"rainfall\": 7,\"temperature\": 13,\"pressure\": 1029,\"relHumidity\": 90,\"light\": 30,\"system\": {\"battery\": 98}}' -t nodes/reports/station1",
-    "start-mqtt": "mosquitto -c /etc/mosquitto/conf.d/mosquitto.conf"
+    "sub-mqtt": "mosquitto_sub -h localhost -t nodes/reports/+",
+    "pub-mqtt": "mosquitto_pub -h localhost -m '{\"stationId\": 1665493329, \"time\": \"Tue, 11 Oct 2022 12:57:21 GMT\", \"wind\": {\"speed\": 20,\"direction\": 235,\"gust\": 30,\"gustDirection\": 310},\"rainfall\": 10,\"temperature\": 10,\"pressure\": 1000,\"relHumidity\": 80,\"light\": 20,\"system\": {\"battery\": 98}}' -t nodes/reports/station1",
+    "start-mqtt": "mosquitto -c ./base-station/src/config/mosquitto.conf"
   },
   "repository": {
     "type": "git",
@@ -34,6 +34,7 @@
     "mongoose": "^6.5.2",
     "mqtt": "^4.3.7",
     "mqtt-pattern": "^1.2.0",
+    "node-cron": "^3.0.2",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^7.1.2",

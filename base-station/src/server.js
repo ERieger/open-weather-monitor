@@ -91,7 +91,7 @@ const port = config.port;                               // Get selected server p
 
 // Routing
 app.get('/', (req, res) => {            // Homepage
-  res.send('<h1>Index Page</h1>');
+  res.render('./index.pug');
 });
 
 app.get('/settings', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
@@ -113,7 +113,7 @@ app.get('/logout', (req, res, next) => {
 
 // Dashboard (ensures auth state)
 app.get('/dashboard', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
-  const sendData = () => { res.render(path.join('./index.pug'), pageData) };
+  const sendData = () => { res.render(path.join('./dashboard.pug'), pageData) };
 
   let stations = await Station.find({});
   let reports = await Reports.find({});

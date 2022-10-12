@@ -1,7 +1,7 @@
 {
     "port": 3000,
     "mqtt": {
-        "url": "mqtt://10.1.1.12",
+        "url": "mqtt://localhost",
         "options": {
             "port": 1883
         },

@@ -105,14 +105,50 @@ html(lang='en')
                 .row
                     .card.col-md-6
                         .card-header
-                            h2 
+                            span
+                                h2 MQTT Server
                         .card-body
+                            .h3 MQTT Server Confugiration
+                            .row.mb-3
+                                .table-responsive.table-vcenter
+                                    table.table
+                                        thead
+                                            tr
+                                                th Property 
+                                                th Value
+                                        tbody 
+                                            tr
+                                                td Server URL
+                                                td#serverUrl.text-muted
+                                            tr
+                                                td Server Port
+                                                td#serverPort.text-muted
+                                            tr 
+                                                td Report Broadcast Topic
+                                                td#reportTopic.text-muted
+                            h3 Debug Server Connection
+                            .row.mb-3 
+                                label.form-label Select a station
+                                .col
+                                    select#stationSelect.form-select(name="stationSelect")
+                                        option(selected disabled) Select a station.
+                                .col-auto
+                                    a#sendBtn.btn.btn-primary Send
+                            .alert.alert-danger(role="alert")
+                                h4.alert-title Warning.
+                                .text-muted This option will submit a report to the selected station <strong>into the live database</strong>. This is best used for debugging MQTT connections before clearing the database.
 
 
-        // Import project dependencies
-        script(src='https://code.jquery.com/jquery-3.6.0.min.js' integrity='sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=' crossorigin='anonymous')
-        script(src='https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta11/dist/js/tabler.min.js')
-        script(src='https://unpkg.com/leaflet@1.8.0/dist/leaflet.js' integrity='sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==' crossorigin='')
-        script(src='https://cdn.jsdelivr.net/npm/apexcharts')
-        // Import custom scripts
-        script(src='/js/dashboard.js')
+
+
+    // Import project dependencies
+    script(src='https://code.jquery.com/jquery-3.6.0.min.js' integrity='sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=' crossorigin='anonymous')
+    script(src='https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta11/dist/js/tabler.min.js')
+    script(src='https://unpkg.com/leaflet@1.8.0/dist/leaflet.js' integrity='sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==' crossorigin='')
+    script(src='https://cdn.jsdelivr.net/npm/apexcharts')
+    script(src="https://unpkg.com/mqtt/dist/mqtt.min.js") 
+    script(src="/js/mqtt-pattern.js") 
+
+    // Import custom scripts
+    script(src="/js/clientApi.js") 
+    script(src="/js/mqttManagement.js") 
