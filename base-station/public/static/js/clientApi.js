@@ -1,3 +1,25 @@
+function deleteReports(confirm) {
+    if (confirm) {
+        $.ajax({
+            type: 'POST',
+            async: false,
+            url: '/api/deleteReports',
+            data: {
+                confirm: confirm
+            },
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log('error ' + textStatus + " " + errorThrown);
+            }
+        });
+    } else {
+        console.log('To confirm deletetion of all reports, parse argument \'true\'.');
+        return;
+    }
+}
+
 function getFirstStation() {
     let result = undefined;
     $.ajax({
@@ -37,7 +59,7 @@ async function getTotals(station, start) {
     let data = await $.getJSON('/api/totals', {
         station: station,
         start: start
-    }); 
+    });
 
     return data;
 }
@@ -46,7 +68,7 @@ async function getWind(station, start) {
     let data = await $.getJSON('/api/windSpeed', {
         station: station,
         start: start
-    }); 
+    });
 
     return data;
 }
@@ -55,7 +77,7 @@ async function getTemperature(station, start) {
     let data = await $.getJSON('/api/temperature', {
         station: station,
         start: start
-    }); 
+    });
 
     return data;
 }
@@ -64,7 +86,7 @@ async function getHumidity(station, start) {
     let data = await $.getJSON('/api/humidity', {
         station: station,
         start: start
-    }); 
+    });
 
     return data;
 }
@@ -73,7 +95,7 @@ async function getRainfall(station, start) {
     let data = await $.getJSON('/api/rainfall', {
         station: station,
         start: start
-    }); 
+    });
 
     return data;
 }
@@ -82,7 +104,7 @@ async function getWindDirection(station, start) {
     let data = await $.get('/api/windDirection', {
         station: station,
         start: start
-    }); 
+    });
 
     return data;
 }

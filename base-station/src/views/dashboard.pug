@@ -99,7 +99,7 @@ html(lang='en')
                             a.dropdown-item(href='/dashboard') Dashboard
                             a.dropdown-item(href='/settings') Settings
                             .dropdown-divider
-                            a.dropdown-item(href='/logout') Logout
+                            a#logout.dropdown-item Logout
         .page-body.pb-3
             .container
                 .row
@@ -251,7 +251,11 @@ html(lang='en')
         script(src='https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta11/dist/js/tabler.min.js')
         script(src='https://unpkg.com/leaflet@1.8.0/dist/leaflet.js' integrity='sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==' crossorigin='')
         script(src='https://cdn.jsdelivr.net/npm/apexcharts')
+        script(src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js") 
+
         // Import custom scripts
         script(src='/js/clientApi.js')
         script(src="/js/chartConfig.js") 
         script(src='/js/dashboard.js')
+        script(src="/js/clientNotifications.js")
+        script(src="/js/logout.js") 

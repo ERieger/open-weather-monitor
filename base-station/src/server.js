@@ -8,6 +8,7 @@ const session = require('express-session');                     // Session manag
 const connectEnsureLogin = require('connect-ensure-login');     // Handle page access to authenticated users
 const { v4: uuidv4 } = require('uuid');                         // Module to generate uuids
 const path = require('path');                                   // Interact with file paths
+const cron = require('node-cron');                              // Require CRON scheduler
 
 const dotenv = require('dotenv');
 dotenv.config({ path: `${__dirname}/config/.env` });
@@ -19,6 +20,7 @@ const User = require('./models/user.model');
 const Reports = require('./models/report.model');
 const Station = require('./models/station.model');
 const Session = require('./models/session.model');
+const Notification = require('./models/notification.model');
 const subscriber = require('./middleware/mqttSubscriber');
 
 // Initialise app
@@ -101,7 +103,14 @@ app.get('/settings', connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
 app.use('/login', auth);                // Login routes
 
 // Authenticate users
-app.post('/authenticate', passport.authenticate('local', { successReturnToOrRedirect: '/dashboard', failureRedirect: '/' }));
+app.post('/authenticate', passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }),
+  function (req, res) {
+    User.updateOne({ username: req.session.passport.user }, { loginWithForm: true }, function (err, docs) {
+      if (err) { console.log(err) }
+      else { console.log("Updated Docs : ", docs) }
+    });
+    res.redirect('/dashboard');
+  });
 
 // Logout users
 app.get('/logout', (req, res, next) => {
@@ -130,6 +139,10 @@ app.get('/authtest', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
    and your session expires in ${req.session.cookie.maxAge} 
    milliseconds.<br><br>
    <a href="/logout">Log Out</a><br><br>`);
+});
+
+app.get('/service-worker.js', (req, res) => {
+  res.sendFile('service-worker.js', { root: './base-station/public/static/js/' });
 });
 
 // Start server listening on selected port

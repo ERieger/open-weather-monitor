@@ -24,6 +24,7 @@
     "nodemon": "^2.0.19"
   },
   "dependencies": {
+    "@pusher/push-notifications-server": "^1.2.6",
     "body-parser": "^1.20.0",
     "cardinal-direction": "^1.1.1",
     "connect-ensure-login": "^0.1.1",

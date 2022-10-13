@@ -1,0 +1,1 @@
+$('#clearDb').click(() => { deleteReports(true) });

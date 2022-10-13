@@ -99,44 +99,82 @@ html(lang='en')
                             a.dropdown-item(href='/dashboard') Dashboard
                             a.dropdown-item(href='/settings') Settings
                             .dropdown-divider
-                            a.dropdown-item(href='/logout') Logout
+                            a#logout.dropdown-item Logout
         .page-body.pb-3
             .container
-                .row
-                    .card.col-md-6
-                        .card-header
-                            span
-                                h2 MQTT Server
-                        .card-body
-                            .h3 MQTT Server Confugiration
-                            .row.mb-3
-                                .table-responsive.table-vcenter
-                                    table.table
-                                        thead
-                                            tr
-                                                th Property 
-                                                th Value
-                                        tbody 
-                                            tr
-                                                td Server URL
-                                                td#serverUrl.text-muted
-                                            tr
-                                                td Server Port
-                                                td#serverPort.text-muted
-                                            tr 
-                                                td Report Broadcast Topic
-                                                td#reportTopic.text-muted
-                            h3 Debug Server Connection
-                            .row.mb-3 
-                                label.form-label Select a station
-                                .col
-                                    select#stationSelect.form-select(name="stationSelect")
-                                        option(selected disabled) Select a station.
-                                .col-auto
-                                    a#sendBtn.btn.btn-primary Send
-                            .alert.alert-danger(role="alert")
-                                h4.alert-title Warning.
-                                .text-muted This option will submit a report to the selected station <strong>into the live database</strong>. This is best used for debugging MQTT connections before clearing the database.
+                .row.g-3
+                    .col-md-6
+                        .card
+                            .card-header
+                                span
+                                    h2 MQTT Server
+                            .card-body
+                                .h3 MQTT Server Confugiration
+                                .row.mb-3
+                                    .table-responsive.table-vcenter
+                                        table.table
+                                            thead
+                                                tr
+                                                    th Property 
+                                                    th Value
+                                            tbody 
+                                                tr
+                                                    td Server URL
+                                                    td#serverUrl.text-muted
+                                                tr
+                                                    td Server Port
+                                                    td#serverPort.text-muted
+                                                tr 
+                                                    td Report Broadcast Topic
+                                                    td#reportTopic.text-muted
+                                h3 Debug Server Connection
+                                .row.mb-3 
+                                    label.form-label Select a station
+                                    .col
+                                        select#stationSelect.form-select(name="stationSelect")
+                                            option(selected disabled) Select a station.
+                                    .col-auto
+                                        a#sendBtn.btn.btn-primary Send
+                                .alert.alert-danger(role="alert")
+                                    h4.alert-title Warning.
+                                    .text-muted This option will submit a report to the selected station <strong>into the live database</strong>. This is best used for debugging MQTT connections before clearing the database.
+                    .col-md-6
+                        .card
+                            .card-header
+                                h2 Database Settings 
+                            .card-body 
+                                span.d-flex.align-items-center.mb-3
+                                    a.btn.btn-danger(data-bs-toggle="modal" data-bs-target="#delConfirm") Clear Database
+                                    .text-muted(style="margin-left: auto;") This option will remove all reports from the database!
+                                .alert.alert-danger(role="alert")
+                                    h4.alert-title Warning.
+                                    .text-muted These options impact the live database and are intended only for use in debugging.
+                                
+                                #delConfirm.modal.fade(tabindex='-1')
+                                    .modal-dialog.modal-sm(role='document')
+                                        .modal-content
+                                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                            .modal-status.bg-danger
+                                            .modal-body.text-center.py-4
+                                                svg.icon.icon-tabler.icon-tabler-alert-triangle.mb-2.text-danger.icon-lg(xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewbox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round')
+                                                    path(stroke='none' d='M0 0h24v24H0z' fill='none')
+                                                    path(d='M12 9v2m0 4v.01')
+                                                    path(d='M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75')
+                                                h3 Are you sure?
+                                                .text-muted Do you really want to clear all reports? This action cannot be undone.
+                                            .modal-footer
+                                                .w-100
+                                                    .row
+                                                        .col
+                                                            a.btn.w-100(data-bs-dismiss='modal') Cancel
+                                                        .col
+                                                            a#clearDb.btn.btn-danger.w-100(data-bs-dismiss='modal') Yes. Do as I say.
+                    .col 
+                        .card
+                            .card-header 
+                                h2 Notifications 
+                            .card-body 
+                                
 
 
 
@@ -152,3 +190,5 @@ html(lang='en')
     // Import custom scripts
     script(src="/js/clientApi.js") 
     script(src="/js/mqttManagement.js") 
+    script(src="/js/settings.js")
+    script(src="/js/logout.js") 

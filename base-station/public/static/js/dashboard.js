@@ -90,7 +90,7 @@ function updatePage(target) {
 }
 
 function updateStationInfo(station, data) {
-    console.log(station, data)
+    console.log(`Rendering: ${data.name} With data:`, data);
     $('#node-name').text(data.name);
     $('#node-loc').text(`${data.loc.lat}, ${data.loc.lon}`);
 
