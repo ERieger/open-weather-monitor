@@ -20,12 +20,12 @@ function deleteReports(confirm) {
     }
 }
 
-function getUid() {
-    return $.get('/api/uid');
+async function getUid() {
+    return await $.get('/api/uid');
 }
 
-function getNotifications() {
-    return $.getJSON('/api/getNotifications');
+async function getNotifications() {
+    return await $.getJSON('/api/getNotifications');
 }
 
 async function toggleUserNotification(state, notification) {
