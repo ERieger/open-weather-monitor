@@ -53,13 +53,46 @@ router.post('/addNotification', async function (req, res) {
             delete req.body['subscribers[]']
             return arr;
         })();
+
         console.log(req.body);
-        res.send('Successfully added notification')
-        await Notification.create(req.body)
+        let doc = await Notification.create(req.body);
+
+        console.log('Added notification:' + doc);
+        res.json({ message: 'Successfully added notification!', id: doc._id })
     } catch (e) {
         res.send(e);
     }
 });
+
+router.post('/toggleNotification', function (req, res) {
+    req.body.state = req.body.state == 'true';
+    console.log(`Toggling notification ${req.body.notification} for user ${req.body.user} to state ${req.body.state}`);
+
+    if (req.body.state) {
+        console.log('Subscribing.')
+        Notification.updateOne({ _id: req.body.notification }, { "$push": { "subscribers": `${req.body.user}` } }, function (err, docs) {
+            if (err) {
+                console.log(err)
+            }
+            else {
+                console.log("Updated Docs : ", docs);
+                res.send('Successfully subscribed.')
+            }
+        });
+    } else {
+        console.log('Unsubscribing.')
+        Notification.updateOne({ _id: req.body.notification }, { "$pull": { "subscribers": `${req.body.user}` } }, function (err, docs) {
+            if (err) {
+                console.log(err)
+            }
+            else {
+                console.log("Updated Docs : ", docs);
+                res.send('Successfully unsubscribed.')
+            }
+        });
+    }
+});
+
 
 router.get('/getNotifications', async function (req, res) {
     let docs = await Notification.find({});
@@ -67,9 +100,24 @@ router.get('/getNotifications', async function (req, res) {
 });
 
 router.post('/unameFromId', async (req, res) => {
-    let docs = await User.findOne({ _id: req.body.id });
-    res.json({ username: docs.username });
+    try {
+        let doc = await User.findOne({ _id: req.body.id }, 'username');
+        res.json({ username: doc.username });
+    } catch (e) {
+        console.log(e)
+        res.send(e)
+    }
 })
+
+router.post('/deleteNotification', async (req, res) => {
+    try {
+        await Notification.deleteOne({ _id: req.body.notification })
+        res.send(`Successfully deleted ${req.body.notification}`);
+    } catch(e) {
+        console.log(e)
+        res.send(e);
+    }
+});
 
 router.get('/beams-auth', async function (req, res) {
     try {

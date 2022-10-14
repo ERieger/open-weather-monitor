@@ -28,6 +28,18 @@ function getNotifications() {
     return $.getJSON('/api/getNotifications');
 }
 
+async function toggleUserNotification(state, notification) {
+    return await $.post('/api/toggleNotification', { notification: notification, state: state, user: await $.get('/api/uid') });
+}
+
+async function deleteNotification(notification) {
+    let response = undefined;
+    await $.post('/api/deleteNotification', { notification }, function (data) {
+        response = data;
+    });
+    return response;
+}
+
 async function unameFromId(id) {
     let response = undefined;
     await $.post('/api/unameFromId', { id: id }, function (data) {

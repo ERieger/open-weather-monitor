@@ -20,30 +20,34 @@ module.exports = async (report) => {
     let notificationListeners = await Notification.find({});
 
     notificationListeners.forEach((listener) => {
-        listener.ref = cleanField(listener.field);
-        console.log(`Checking ${listener.field} (${eval(listener.ref)}) for value ${listener.condition} ${listener.trigger}`);
+        if (listener.subscribers.length >= 1) {
+            listener.ref = cleanField(listener.field);
+            console.log(`Checking ${listener.field} (${eval(listener.ref)}) for value ${listener.condition} ${listener.trigger}`);
 
-        switch (listener.condition) {
-            case '==':
-                if (eval(listener.ref) == listener.trigger) {
-                    console.log(`${eval(listener.ref)} == ${listener.trigger}`);
-                    sendPushNotification(listener, report)
-                }
-                break;
+            switch (listener.condition) {
+                case '==':
+                    if (eval(listener.ref) == listener.trigger) {
+                        console.log(`${eval(listener.ref)} == ${listener.trigger}`);
+                        sendPushNotification(listener, report)
+                    }
+                    break;
 
-            case '>':
-                if (eval(listener.ref) > listener.trigger) {
-                    console.log(`${eval(listener.ref)} > ${listener.trigger}`);
-                    sendPushNotification(listener, report)
-                }
-                break;
+                case '>':
+                    if (eval(listener.ref) > listener.trigger) {
+                        console.log(`${eval(listener.ref)} > ${listener.trigger}`);
+                        sendPushNotification(listener, report)
+                    }
+                    break;
 
-            case '<':
-                if (eval(listener.ref) < listener.trigger) {
-                    console.log(`${eval(listener.ref)} < ${listener.trigger}`);
-                    sendPushNotification(listener, report)
-                }
-                break;
+                case '<':
+                    if (eval(listener.ref) < listener.trigger) {
+                        console.log(`${eval(listener.ref)} < ${listener.trigger}`);
+                        sendPushNotification(listener, report)
+                    }
+                    break;
+            }
+        } else {
+            return;
         }
     });
 };

@@ -13,14 +13,12 @@ window.onload = async () => {
     $('#serverPort').append(config.options.port);
     $('#reportTopic').append(config.reportTopic);
     $('#clearDb').click(() => { deleteReports(true) });
-    $('#addNotification').click((self) => {
+    $('#addNotification').click(() => {
         $('#notification-add-row').addNotification();
     });
 
     updateNotificationTable();
 };
-
-
 
 $.fn.addNotification = async function () {
     let inputs = {
@@ -44,7 +42,26 @@ $.fn.addNotification = async function () {
     updateNotificationTable();
 }
 
+$.fn.toggleNotification = async function (notification) {
+    console.log($(this).prop('checked'));
+    let res = undefined;
+
+    if ($(this).prop('checked')) {
+        res = await toggleUserNotification(true, notification);
+        console.log('State: ' + true);
+    } else {
+        res = await toggleUserNotification(false, notification);
+        console.log('State: ' + false);
+    }
+
+    alert(String(res));
+    updateNotificationTable();
+}
+
 async function renderNotification(notification) {
+    let user = await getUid();
+    console.log(notification, user);
+
     $('#notification-table-body').prepend(`
     <tr class="notification-row">
         <td>${JSON.stringify(notification.field)}</td>
@@ -62,7 +79,7 @@ async function renderNotification(notification) {
                     <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
                     <line x1="13.5" y1="6.5" x2="17.5" y2="10.5"></line>
                 </svg>
-                </a><a class="btn btn-danger btn-icon" aria-label="button">
+                </a><a class="btn btn-danger btn-icon" id="notificationDelete" onclick="deleteNot('${notification._id}')" aria-label="button">
                 <svg class="icon icon-tabler icon-tabler-trash" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                     <line x1="4" y1="7" x2="20" y2="7"></line>
@@ -75,18 +92,33 @@ async function renderNotification(notification) {
         </td>
         <td> 
             <label class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" checked="checked" />
+                <input class="form-check-input" type="checkbox" ${checkState(notification.subscribers, user)} onclick="$(this).toggleNotification('${notification._id}')" />
             </label>
         </td>
     </tr>
     `);
 }
 
+async function deleteNot(notification) {
+    alert(await deleteNotification(notification));
+    updateNotificationTable();
+}
+
+function checkState(subscribers, user) {
+    if (subscribers.includes(user)) {
+        return 'checked';
+    } else {
+        return '';
+    }
+}
+
 async function returnIcons(notification) {
     let icons = '';
 
     for (let i = 0; i < notification.subscribers.length; i++) {
+        console.log(notification.subscribers[i])
         let username = await unameFromId(notification.subscribers[i]);
+        console.log(username)
         icons += `<span class="avatar bg-blue-lt">${username.slice(0, 2)}</span>`;
     }
 
@@ -95,7 +127,7 @@ async function returnIcons(notification) {
 
 async function updateNotificationTable() {
     let notifications = await getNotifications();
-    
+
     $('#notification-table').find('.notification-row').each(function () {
         $(this).remove();
     });

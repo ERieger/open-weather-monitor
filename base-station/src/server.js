@@ -74,7 +74,7 @@ const config = require("./config/config");              // Load config json
 const port = config.port;                               // Get selected server port
 
 // Function to register a new user
-// User.register({ username: 'test', active: false }, 'test');
+// User.register({ username: 'erieger', active: false }, 'test');
 // Station.create({
 //     'stationId': uuidv4(),
 //     'name': 'Adelaide Airport',
