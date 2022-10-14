@@ -20,6 +20,22 @@ function deleteReports(confirm) {
     }
 }
 
+function getUid() {
+    return $.get('/api/uid');
+}
+
+function getNotifications() {
+    return $.getJSON('/api/getNotifications');
+}
+
+async function unameFromId(id) {
+    let response = undefined;
+    await $.post('/api/unameFromId', { id: id }, function (data) {
+        response = data.username;
+    });
+    return response;
+}
+
 function getFirstStation() {
     let result = undefined;
     $.ajax({

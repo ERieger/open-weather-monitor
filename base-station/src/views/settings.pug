@@ -91,7 +91,7 @@ html(lang='en')
                                                             path(d='M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z')
                     .nav-item.dropdown
                         a.nav-link.d-flex.lh-1.text-reset.p-0(href='#' data-bs-toggle='dropdown' aria-label='Open user menu')
-                            span.avatar.avatar-sm(style='background-image: url(./static/avatars/000m.jpg)')
+                            span.avatar.avatar-sm ER
                             .d-none.d-xl-block.ps-2
                                 div First Last
                                 .mt-1.small.text-muted Role
@@ -102,7 +102,7 @@ html(lang='en')
                             a#logout.dropdown-item Logout
         .page-body.pb-3
             .container
-                .row.g-3
+                .row.g-3.mb-3
                     .col-md-6
                         .card
                             .card-header
@@ -149,7 +149,7 @@ html(lang='en')
                                 .alert.alert-danger(role="alert")
                                     h4.alert-title Warning.
                                     .text-muted These options impact the live database and are intended only for use in debugging.
-                                
+
                                 #delConfirm.modal.fade(tabindex='-1')
                                     .modal-dialog.modal-sm(role='document')
                                         .modal-content
@@ -169,14 +169,137 @@ html(lang='en')
                                                             a.btn.w-100(data-bs-dismiss='modal') Cancel
                                                         .col
                                                             a#clearDb.btn.btn-danger.w-100(data-bs-dismiss='modal') Yes. Do as I say.
+                .row
                     .col 
                         .card
                             .card-header 
                                 h2 Notifications 
                             .card-body 
-                                
-
-
+                                .p.mb-3 Use the following options to configure notifications for your account.
+                                table#notification-table.table.table-responsive.table-vcenter
+                                    thead
+                                        tr
+                                            th Field
+                                            th Condition 
+                                            th Trigger 
+                                            th Subscribers
+                                            th Manage
+                                            th Status
+                                    tbody#notification-table-body
+                                        tr.notification-row
+                                            td.placeholder-glow
+                                                div.placeholder.col-4
+                                            td.placeholder-glow
+                                                div.placeholder.col-2
+                                            td.placeholder-glow 
+                                                div.placeholder.col-3
+                                            td.placeholder-glow
+                                                .avatar-list.avatar-list-stacked
+                                                    span.avatar.placeholder
+                                            td
+                                                .btn-list
+                                                    a.btn.btn-primary.btn-icon.disabled(aria-label="button")
+                                                        svg.icon.icon-tabler.icon-tabler-pencil(xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewbox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round')
+                                                            path(stroke='none' d='M0 0h24v24H0z' fill='none')
+                                                            path(d='M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4')
+                                                            line(x1='13.5' y1='6.5' x2='17.5' y2='10.5')
+                                                    a.btn.btn-danger.btn-icon.disabled(aria-label="button")
+                                                        svg.icon.icon-tabler.icon-tabler-trash(xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewbox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round')
+                                                            path(stroke='none' d='M0 0h24v24H0z' fill='none')
+                                                            line(x1='4' y1='7' x2='20' y2='7')
+                                                            line(x1='10' y1='11' x2='10' y2='17')
+                                                            line(x1='14' y1='11' x2='14' y2='17')
+                                                            path(d='M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12')
+                                                            path(d='M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3')
+                                            td 
+                                                label.form-check.form-switch
+                                                    input.form-check-input(type="checkbox" checked disabled)
+                                        tr.notification-row
+                                            td.placeholder-glow
+                                                div.placeholder.col-4
+                                            td.placeholder-glow
+                                                div.placeholder.col-2
+                                            td.placeholder-glow 
+                                                div.placeholder.col-3
+                                            td.placeholder-glow
+                                                .avatar-list.avatar-list-stacked
+                                                    span.avatar.placeholder
+                                            td
+                                                .btn-list
+                                                    a.btn.btn-primary.btn-icon.disabled(aria-label="button")
+                                                        svg.icon.icon-tabler.icon-tabler-pencil(xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewbox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round')
+                                                            path(stroke='none' d='M0 0h24v24H0z' fill='none')
+                                                            path(d='M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4')
+                                                            line(x1='13.5' y1='6.5' x2='17.5' y2='10.5')
+                                                    a.btn.btn-danger.btn-icon.disabled(aria-label="button")
+                                                        svg.icon.icon-tabler.icon-tabler-trash(xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewbox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round')
+                                                            path(stroke='none' d='M0 0h24v24H0z' fill='none')
+                                                            line(x1='4' y1='7' x2='20' y2='7')
+                                                            line(x1='10' y1='11' x2='10' y2='17')
+                                                            line(x1='14' y1='11' x2='14' y2='17')
+                                                            path(d='M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12')
+                                                            path(d='M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3')
+                                            td 
+                                                label.form-check.form-switch
+                                                    input.form-check-input(type="checkbox" checked disabled)
+                                        tr.notification-row
+                                            td.placeholder-glow
+                                                div.placeholder.col-4
+                                            td.placeholder-glow
+                                                div.placeholder.col-2
+                                            td.placeholder-glow 
+                                                div.placeholder.col-3
+                                            td.placeholder-glow
+                                                .avatar-list.avatar-list-stacked
+                                                    span.avatar.placeholder
+                                            td
+                                                .btn-list
+                                                    a.btn.btn-primary.btn-icon.disabled(aria-label="button")
+                                                        svg.icon.icon-tabler.icon-tabler-pencil(xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewbox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round')
+                                                            path(stroke='none' d='M0 0h24v24H0z' fill='none')
+                                                            path(d='M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4')
+                                                            line(x1='13.5' y1='6.5' x2='17.5' y2='10.5')
+                                                    a.btn.btn-danger.btn-icon.disabled(aria-label="button")
+                                                        svg.icon.icon-tabler.icon-tabler-trash(xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewbox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round')
+                                                            path(stroke='none' d='M0 0h24v24H0z' fill='none')
+                                                            line(x1='4' y1='7' x2='20' y2='7')
+                                                            line(x1='10' y1='11' x2='10' y2='17')
+                                                            line(x1='14' y1='11' x2='14' y2='17')
+                                                            path(d='M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12')
+                                                            path(d='M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3')
+                                            td 
+                                                label.form-check.form-switch
+                                                    input.form-check-input(type="checkbox" checked disabled)
+                                        tr#notification-add-row
+                                            td 
+                                                select#fieldSelect.form-select(name="fieldSelect")
+                                                    option(selected disabled) Select a trigger field.
+                                                    option(value="wind,speed") Wind Speed
+                                                    option(value="wind,direction") Wind Direction
+                                                    option(value="wind,gust") Wind Gusts
+                                                    option(value="rainfall") Rainfall
+                                                    option(value="temperature") Temperature
+                                                    option(value="pressure") Pressure
+                                                    option(value="relHumidity") Relative Humidity
+                                                    option(value="light") Light
+                                                    option(value="system,battery") System Battery
+                                            td 
+                                                select#conditionSelect.form-select(name="conditionNotifications")
+                                                    option(selected disabled) Select a condition.
+                                                    option(value="<") <
+                                                    option(value="=") =
+                                                    option(value=">") >
+                                            td 
+                                                input#triggerSelect.form-control(type="number")
+                                            td
+                                                .avatar-list.avatar-list-stacked
+                                                    span.avatar.bg-blue-lt ER
+                                            td 
+                                                a#addNotification.btn.btn-success.btn-icon(aria-label="button")
+                                                    svg.icon.icon-tabler.icon-tabler-plus(xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewbox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round')
+                                                        path(stroke='none' d='M0 0h24v24H0z' fill='none')
+                                                        line(x1='12' y1='5' x2='12' y2='19')
+                                                        line(x1='5' y1='12' x2='19' y2='12')
 
 
     // Import project dependencies
@@ -186,9 +309,12 @@ html(lang='en')
     script(src='https://cdn.jsdelivr.net/npm/apexcharts')
     script(src="https://unpkg.com/mqtt/dist/mqtt.min.js") 
     script(src="/js/mqtt-pattern.js") 
+    script(src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js") 
 
     // Import custom scripts
     script(src="/js/clientApi.js") 
+    script(src="/js/clientNotifications.js")
     script(src="/js/mqttManagement.js") 
     script(src="/js/settings.js")
     script(src="/js/logout.js") 
+

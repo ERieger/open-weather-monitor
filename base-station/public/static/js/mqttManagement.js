@@ -6,24 +6,6 @@ const config = {
     reportTopic: "nodes/reports/+"
 };
 
-window.onload = () => {
-    const stations = getStations();
-
-    stations.forEach((station) => {
-        $('#stationSelect').append(`<option value="${station.stationId}">${station.name}</option>`)
-    });
-
-    $('#sendBtn').click(() => {
-        emulateStation();
-    });
-
-    $('#serverUrl').append(config.url);
-    $('#serverPort').append(config.options.port);
-    $('#reportTopic').append(config.reportTopic);
-
-    console.log(stations)
-};
-
 const client = mqtt.connect(config.url, config.options);    // Create a client
 const reportTopic = config.reportTopic;
 

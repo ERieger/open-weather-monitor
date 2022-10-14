@@ -1,12 +1,14 @@
 const express = require('express');
 const Station = require('../models/station.model');
 const User = require('../models/user.model');
+const Notification = require('../models/notification.model');
 const Reports = require('../models/report.model');
 const bodyParser = require('body-parser');                      // Parse incoming request body to req.body
 const router = express.Router();
 const Compass = require("cardinal-direction");
 const PushNotifications = require("@pusher/push-notifications-server");
 const dotenv = require('dotenv');
+const notifications = require('../middleware/notifications');
 dotenv.config({ path: `${__dirname}/config/.env` });
 
 let beamsClient = new PushNotifications({
@@ -25,6 +27,49 @@ router.post('/deleteReports', function (req, res) {
         res.send(e);
     }
 });
+
+router.post('/addNotification', async function (req, res) {
+    try {
+        req.body.field = (() => {
+            let arr = [];
+            if (!Array.isArray(req.body['field[]'])) {
+                req.body['field[]'] = [req.body['field[]']];
+            }
+            req.body['field[]'].forEach((field) => {
+                arr.push(field);
+            });
+            delete req.body['field[]']
+            return arr;
+        })();
+
+        req.body.subscribers = (() => {
+            let arr = [];
+            if (!Array.isArray(req.body['subscribers[]'])) {
+                req.body['subscribers[]'] = [req.body['subscribers[]']];
+            }
+            req.body['subscribers[]'].forEach((subscriber) => {
+                arr.push(subscriber);
+            });
+            delete req.body['subscribers[]']
+            return arr;
+        })();
+        console.log(req.body);
+        res.send('Successfully added notification')
+        await Notification.create(req.body)
+    } catch (e) {
+        res.send(e);
+    }
+});
+
+router.get('/getNotifications', async function (req, res) {
+    let docs = await Notification.find({});
+    res.json(docs);
+});
+
+router.post('/unameFromId', async (req, res) => {
+    let docs = await User.findOne({ _id: req.body.id });
+    res.json({ username: docs.username });
+})
 
 router.get('/beams-auth', async function (req, res) {
     try {
