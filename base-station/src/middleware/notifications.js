@@ -45,7 +45,7 @@ module.exports = async (report) => {                                            
 };
 
 async function sendPushNotification(listener, report) {                                 // Send a notification accept the listener and the report
-    let station = await Station.findOne({ stationId: report.stationId }, {name: 1});    // Lookup the stationId and return the human readable name
+    let station = await Station.findOne({ stationId: report.stationId }, { name: 1 });    // Lookup the stationId and return the human readable name
     beamsClient
         .publishToUsers(listener.subscribers, {                                         // Publish to all users in the subscription list
             web: {
