@@ -1,67 +1,67 @@
-window.onload = async () => {
-    const stations = await getStations();
+window.onload = async () => {                               // On window load
+    const stations = await getStations();                   // Get a list of the stations
 
-    stations.forEach((station) => {
+    stations.forEach((station) => {                         // Add the stations as options in the dropdown
         $('#stationSelect').append(`<option value="${station.stationId}">${station.name}</option>`)
     });
 
-    $('#sendBtn').click(() => {
+    $('#sendBtn').click(() => {                             // Add click listener to the send button
         emulateStation();
     });
 
+    // Updae the mqtt settings table
     $('#serverUrl').append(config.url);
     $('#serverPort').append(config.options.port);
     $('#reportTopic').append(config.reportTopic);
-    $('#clearDb').click(() => { deleteReports(true) });
-    $('#addNotification').click(() => {
-        $('#notification-add-row').addNotification();
+    $('#clearDb').click(() => { deleteReports(true) });     // Add function to the clear database button
+    $('#addNotification').click(() => {                     // Add function to the add notification button
+        $('#notification-add-row').addNotification();       // Call the function in the scope of the notification row
     });
 
-    updateNotificationTable();
+    updateNotificationTable();                              // Update the notification table
 };
 
-$.fn.addNotification = async function () {
-    let inputs = {
+$.fn.addNotification = async function () {                          // Function to add a notifaction
+    let inputs = {                                                  // Get the value of the inputs
         field: $('#fieldSelect').val(),
         condition: $('#conditionSelect').val(),
         trigger: $('#triggerSelect').val()
     }
 
-    let notification = {
-        field: inputs.field.split(','),
+    let notification = {                                            // Define notification object in format of the database
+        field: inputs.field.split(','),                             // Turn the comma seperated list into an array
         condition: inputs.condition,
         trigger: Number(inputs.trigger),
-        subscribers: [`${await getUid()}`]
+        subscribers: [`${await getUid()}`]                          // Add current user's ID to array of subscribers
     }
 
-    $.post('/api/addNotification', notification, function (data) {
+    $.post('/api/addNotification', notification, function (data) {  // Post the object to the server
         alert(`${JSON.stringify(data)}:
-        ${JSON.stringify(notification)}`);
+        ${JSON.stringify(notification)}`);                          // Alert the data that the server returns
     });
 
-    updateNotificationTable();
+    updateNotificationTable();                                      // Update the notification table
 }
 
-$.fn.toggleNotification = async function (notification) {
-    console.log($(this).prop('checked'));
+$.fn.toggleNotification = async function (notification) {           // Toggle user from notification (accepts a notification id)
     let res = undefined;
 
-    if ($(this).prop('checked')) {
-        res = await toggleUserNotification(true, notification);
-        console.log('State: ' + true);
-    } else {
-        res = await toggleUserNotification(false, notification);
-        console.log('State: ' + false);
+    if ($(this).prop('checked')) {                                  // If subscribing
+        console.log('Notification:', notification, 'State:', true);
+        res = await toggleUserNotification(true, notification);         // Call toggle function with true and notification id
+    } else {                                                        // If unsubscribing
+        console.log('Notification:', notification, 'State:', false);
+        res = await toggleUserNotification(false, notification);        // Call toggle function with false and notification id
     }
 
-    alert(String(res));
-    updateNotificationTable();
+    alert(String(res));                                             // Alert what the server returns
+    updateNotificationTable();                                      // Update the notificationt table
 }
 
-async function renderNotification(notification) {
-    let user = await getUid();
-    console.log(notification, user);
+async function renderNotification(notification) {           // Function to render a notification row
+    let user = await getUid();                              // Get the user id
 
+    // Append a row to the start of the table substiuting the values in from the notification
     $('#notification-table-body').prepend(`
     <tr class="notification-row">
         <td>${JSON.stringify(notification.field)}</td>
@@ -99,40 +99,42 @@ async function renderNotification(notification) {
     `);
 }
 
+// Delete a notification with the id
 async function deleteNot(notification) {
     alert(await deleteNotification(notification));
-    updateNotificationTable();
+    updateNotificationTable(); // Update the database
 }
 
+// Check you are subscribed to the notification
 function checkState(subscribers, user) {
-    if (subscribers.includes(user)) {
-        return 'checked';
+    if (subscribers.includes(user)) { // Are you subscribed?
+        return 'checked';             // Make switch checked
     } else {
-        return '';
+        return '';                    // Make switch off
     }
 }
 
+// Convert the user ids into icons
 async function returnIcons(notification) {
     let icons = '';
 
-    for (let i = 0; i < notification.subscribers.length; i++) {
-        console.log(notification.subscribers[i])
-        let username = await unameFromId(notification.subscribers[i]);
-        console.log(username)
-        icons += `<span class="avatar bg-blue-lt">${username.slice(0, 2)}</span>`;
+    for (let i = 0; i < notification.subscribers.length; i++) {                     // For each subscribed user
+        let username = await unameFromId(notification.subscribers[i]);              // Get the username from the database
+        icons += `<span class="avatar bg-blue-lt">${username.slice(0, 2)}</span>`;  // Put the first 2 characters of the name in the avatar
     }
 
-    return icons;
+    return icons;                                                                   // Return string of avatars
 }
 
+// Update the notification table
 async function updateNotificationTable() {
-    let notifications = await getNotifications();
+    let notifications = await getNotifications();                           // Get all the notifications fromt he database
 
-    $('#notification-table').find('.notification-row').each(function () {
-        $(this).remove();
+    $('#notification-table').find('.notification-row').each(function () {   // Delete all rows
+        $(this).remove();                                                   // Remove the row
     });
 
-    notifications.forEach((notification) => {
-        renderNotification(notification);
+    notifications.forEach((notification) => {                               // For each notification
+        renderNotification(notification);                                   // Render a new notification row
     });
 }

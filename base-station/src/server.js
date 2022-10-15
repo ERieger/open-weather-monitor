@@ -10,8 +10,8 @@ const { v4: uuidv4 } = require('uuid');                         // Module to gen
 const path = require('path');                                   // Interact with file paths
 const cron = require('node-cron');                              // Require CRON scheduler
 
-const dotenv = require('dotenv');
-dotenv.config({ path: `${__dirname}/config/.env` });
+const dotenv = require('dotenv');                               // Require env library
+dotenv.config({ path: `${__dirname}/config/.env` });            // Set env location
 
 // Import custom modules
 const auth = require('./routes/auth.route');

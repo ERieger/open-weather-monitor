@@ -1,3 +1,4 @@
+// This is a server side node package repackaged to work client-side
 var SEPARATOR = "/";
 var SINGLE = "+";
 var ALL = "#";

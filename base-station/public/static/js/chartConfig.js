@@ -1,3 +1,5 @@
+// This file contains pre-defined dropin configurations for all the apex charts graphs.
+// It is more efficient to define once and customise rather than redefining the same values repeatedly.
 let peekGraphTemplate = {
     series: [],
     chart: {
