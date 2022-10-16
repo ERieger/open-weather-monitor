@@ -1,5 +1,5 @@
-// Session information schema
+// Session Schema
 {
-    "expires": "String",
-    "session": "String"
+    "expires": String,
+    "session": String
 }

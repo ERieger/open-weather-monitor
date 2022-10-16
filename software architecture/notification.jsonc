@@ -1,0 +1,7 @@
+// Notification Schema
+{
+    "field": Array,
+    "condition": String,
+    "trigger": Number,
+    "subscribers": Array
+}

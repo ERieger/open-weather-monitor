@@ -1,9 +1,7 @@
-// User data schema
+// User Schema
 {
-    "username": "String",
-    "password": "String",
-    "role": "String",
-    "salt": "String",
-    "hash": "String",
-    "__v": "Int"
+    "username": String,
+    "password": String,
+    "lastLogin": Date,
+    "loginWithForm": Boolean
 }

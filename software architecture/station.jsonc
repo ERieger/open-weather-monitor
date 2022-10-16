@@ -1,12 +1,13 @@
-// Schema defining a station node
+// Station Schema
 {
-    "stationId": "String",
-    "name": "String",
-    "lastUpdate": "Date",
+    "stationId": String,
+    "name": String,
+    "lastUpdate": Date,
     "loc": {
-        "lat": "Number",
-        "Lon": "Number"
+        "lat": Number,
+        "lon": Number
     },
-    "Sensors": ["String"],
-    "battery": "Number"
+    "status": Boolean,
+    "sensors": [String],
+    "battery": Number
 }
