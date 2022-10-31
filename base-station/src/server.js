@@ -66,7 +66,7 @@ app.use(passport.session());                            // Initialise session
 
 // Intialise passport
 passport.use(User.createStrategy());                    // Passport local strategy (authentication method)
-passport.serializeUser(User.serializeUser());           // Serialize
+passport.serializeUser(User.serializeUser());           // Serialize
 passport.deserializeUser(User.deserializeUser());       // Deserialize
 
 // Server configuration
